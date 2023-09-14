@@ -1,0 +1,16 @@
+.image-position {
+  position: relative;
+}
+
+.logo-image {
+  position: absolute;
+  left: 15rem;
+  z-index: 1;
+}
+
+.straight-line {
+  width: 58%; /* Set the width of the line */
+  border-bottom: 1px solid red; /* Set the line color and style */
+  position: absolute;
+  left: 20rem;
+}

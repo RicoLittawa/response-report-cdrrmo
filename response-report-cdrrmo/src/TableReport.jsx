@@ -16,14 +16,16 @@ export default function Table() {
   const handleOpen = (value, id) => {
     setOpen(!open);
     setSize(value);
-    axios
-      .get(`http://localhost:3000/reports/${id}`)
-      .then((response) => {
-        setReport(response.data);
-      })
-      .catch((error) => {
-        console.error("Error fetching data:", error);
-      });
+    if (id) {
+      axios
+        .get(`http://localhost:3000/reports/${id}`)
+        .then((response) => {
+          setReport(response.data);
+        })
+        .catch((error) => {
+          console.error("Error fetching data:", error);
+        });
+    }
   };
   const TABLE_HEAD = [
     "Name",
@@ -46,10 +48,6 @@ export default function Table() {
         console.error("Error fetching data:", error);
       });
   };
-  useEffect(() => {
-    
-    console.log(report);
-  }, [report]);
 
   useEffect(() => {
     fetchData();

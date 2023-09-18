@@ -35,11 +35,24 @@ const validationSchema = Yup.object().shape({
   driver: Yup.string().required("Driver is required"),
   dispatch: Yup.string().required("Dispatch is required"),
   members: Yup.string().required("Members is required"),
+  preparedBy:Yup.string().required("Prepared by is required")
 });
 export default function Form() {
   const currDate = new Date();
   const formattedDate = currDate.toISOString().split("T")[0];
   const genderArray = ["Male", "Female"];
+
+  const formatTime = (data) => {
+    const [hours, minutes] = data.split(":");
+    const jsDate = new Date();
+    jsDate.setHours(hours, minutes);
+    const jsFormattedTime = jsDate.toLocaleTimeString([], {
+      hour: "numeric",
+      minute: "2-digit",
+      hour12: true,
+    });
+    return jsFormattedTime;
+  };
 
   const formik = useFormik({
     initialValues: {
@@ -59,13 +72,14 @@ export default function Form() {
       driver: "",
       dispatch: "",
       members: "",
+      preparedBy:""
     },
     validationSchema,
     onSubmit: (values, { resetForm }) => {
       const reportData = {
         emergencyType: values.emergencyType,
         date: values.date,
-        time: values.time,
+        time: formatTime(values.time),
         typeOfIncident: values.typeOfIncident,
         location: values.location,
         nameOfCaller: values.nameOfCaller,
@@ -82,6 +96,7 @@ export default function Form() {
           driver: values.driver,
           dispatch: values.dispatch,
           members: values.members,
+          preparedBy:values.preparedBy
         },
       };
       axios
@@ -93,7 +108,6 @@ export default function Form() {
         .catch((err) => console.log(err));
     },
   });
-  console.log(formik);
 
   return (
     <div className="w-full">
@@ -446,6 +460,24 @@ export default function Form() {
               formik.touched.members && formik.errors.members ? true : false
             }
           ></Textarea>
+        </div>
+        <div className="py-3">
+          {formik.touched.preparedBy && formik.errors.preparedBy ? (
+            <Typography variant="small" className="text-red-500">
+              <FontAwesomeIcon className="pr-1" icon={faCircleExclamation} />
+              {formik.errors.preparedBy}
+            </Typography>
+          ) : null}
+          <Input
+            name="preparedBy"
+            label="Prepared by"
+            onChange={formik.handleChange}
+            value={formik.values.preparedBy}
+            onBlur={formik.handleBlur}
+            error={
+              formik.touched.preparedBy && formik.errors.preparedBy ? true : false
+            }
+          />
         </div>
         <div className="flex justify-end">
           <Button

@@ -14,3 +14,20 @@
   position: absolute;
   left: 20rem;
 }
+
+@media print {
+  .scroll-container {
+    overflow: visible;
+    height: fit-content;
+  }
+  .logo-image {
+    position: absolute;
+    left: 4rem;
+    z-index: 1;
+  }
+  .straight-line {
+    width: 70%; /* Set the width of the line */
+    left: 10rem;
+  }
+  
+}

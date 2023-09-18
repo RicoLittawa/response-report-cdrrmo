@@ -19,6 +19,7 @@ const reportsSchema = new mongoose.Schema({
     driver: String,
     dispatch: String,
     members: String,
+    preparedBy:String
   },
 });
 

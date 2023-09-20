@@ -35,24 +35,13 @@ const validationSchema = Yup.object().shape({
   driver: Yup.string().required("Driver is required"),
   dispatch: Yup.string().required("Dispatch is required"),
   members: Yup.string().required("Members is required"),
-  preparedBy:Yup.string().required("Prepared by is required")
+  preparedBy: Yup.string().required("Prepared by is required"),
 });
 export default function Form() {
   const currDate = new Date();
   const formattedDate = currDate.toISOString().split("T")[0];
   const genderArray = ["Male", "Female"];
 
-  const formatTime = (data) => {
-    const [hours, minutes] = data.split(":");
-    const jsDate = new Date();
-    jsDate.setHours(hours, minutes);
-    const jsFormattedTime = jsDate.toLocaleTimeString([], {
-      hour: "numeric",
-      minute: "2-digit",
-      hour12: true,
-    });
-    return jsFormattedTime;
-  };
 
   const formik = useFormik({
     initialValues: {
@@ -72,14 +61,14 @@ export default function Form() {
       driver: "",
       dispatch: "",
       members: "",
-      preparedBy:""
+      preparedBy: "",
     },
     validationSchema,
     onSubmit: (values, { resetForm }) => {
       const reportData = {
         emergencyType: values.emergencyType,
         date: values.date,
-        time: formatTime(values.time),
+        time: values.time,
         typeOfIncident: values.typeOfIncident,
         location: values.location,
         nameOfCaller: values.nameOfCaller,
@@ -96,11 +85,11 @@ export default function Form() {
           driver: values.driver,
           dispatch: values.dispatch,
           members: values.members,
-          preparedBy:values.preparedBy
+          preparedBy: values.preparedBy,
         },
       };
       axios
-        .post("http://localhost:3000/reports", { reports: reportData })
+        .post("http://localhost:3000/", { reports: reportData })
         .then((result) => {
           console.log(result);
           resetForm();
@@ -333,7 +322,6 @@ export default function Form() {
             onBlur={formik.handleBlur}
             value={formik.values.gender}
             error={formik.touched.gender && formik.errors.gender ? true : false}
-
           >
             {genderArray.map((gen) => (
               <Option key={gen} value={gen}>
@@ -475,7 +463,9 @@ export default function Form() {
             value={formik.values.preparedBy}
             onBlur={formik.handleBlur}
             error={
-              formik.touched.preparedBy && formik.errors.preparedBy ? true : false
+              formik.touched.preparedBy && formik.errors.preparedBy
+                ? true
+                : false
             }
           />
         </div>

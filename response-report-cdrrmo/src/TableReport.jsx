@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { Button, Card, Typography } from "@material-tailwind/react";
 import DialogMessage from "./Dialog";
-
+import { Link } from "react-router-dom";
 export default function Table() {
   const [data, setData] = useState([]);
   const [open, setOpen] = useState(false);
@@ -154,9 +154,12 @@ export default function Table() {
                     >
                       <PrintIcon />
                     </Button>
-                    <Button className="bg-blue-300 drop-shadow-xl hover:bg-blue-500 text-white text-sm font-bold px-3 py-1 rounded my-2 mx-2">
+                    <Link
+                      to={`/update/${item._id}`}
+                      className="bg-blue-300 drop-shadow-xl hover:bg-blue-500 text-white text-sm font-bold px-3 py-1 rounded my-2 mx-2"
+                    >
                       <EditIcon />
-                    </Button>
+                    </Link>
                     <Button className="bg-red-300 drop-shadow-xl hover:bg-red-500 text-white text-sm font-bold px-3 py-1 rounded my-2 mx-2">
                       <DeleteIcon />
                     </Button>

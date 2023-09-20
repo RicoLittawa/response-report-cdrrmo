@@ -12,6 +12,22 @@ import logo1 from "./assets/logo1.png";
 import ReactToPrint from "react-to-print";
 
 export default function DialogMessage({ open, size, handleOpen, report }) {
+  const formatTime = (data) => {
+    // Create a new Date object to parse the time string
+    const jsDate = new Date(`01/01/2000 ${data}`);
+    // Extract hours and minutes
+    let hours = jsDate.getHours();
+    const minutes = jsDate.getMinutes().toString().padStart(2, "0");
+    // Determine AM or PM
+    const amOrPm = hours >= 12 ? "PM" : "AM";
+    // Convert to 12-hour format
+    if (hours > 12) {
+      hours -= 12;
+    } else if (hours === 0) {
+      hours = 12;
+    }
+    return `${hours}:${minutes} ${amOrPm}`;
+  };
   const nameOfPatient = report?.patientInformation?.nameOfPatient ?? "Unknown";
   const age = report?.patientInformation?.age ?? "Unknown";
   const gender = report?.patientInformation?.gender ?? "Unknown";
@@ -23,8 +39,8 @@ export default function DialogMessage({ open, size, handleOpen, report }) {
   const dispatch = report?.membersResponded?.dispatch ?? "Unknown";
   const prepared = report?.membersResponded?.preparedBy ?? "Unknown";
   const componentRef = useRef();
+  const time = formatTime(report.time);
 
-  
   return (
     <>
       <Dialog
@@ -75,7 +91,7 @@ export default function DialogMessage({ open, size, handleOpen, report }) {
                   </p>
                   <p>
                     Time of Call:
-                    <span className="font-normal"> {report.time}</span>
+                    <span className="font-normal"> {time}</span>
                   </p>
                 </div>
               </div>

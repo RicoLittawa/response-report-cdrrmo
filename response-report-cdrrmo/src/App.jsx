@@ -1,18 +1,17 @@
 import "./App.css";
-import Header from "./Header";
-import Form from "./Form";
-import Table from "./TableReport";
+import { BrowserRouter, Routes, Router, Route } from "react-router-dom";
+import Home from "./Home";
+import Update from "./Update/Update"
 
 function App() {
   return (
     <>
-      <main className="flex justify-center">
-        <section className="bg-white block shadow-md">
-          <Header />
-          <Form />
-          <Table />
-        </section>
-      </main>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Home />}></Route>
+          <Route path="/update/:id" element={<Update />}></Route>
+        </Routes>
+      </BrowserRouter>
     </>
   );
 }

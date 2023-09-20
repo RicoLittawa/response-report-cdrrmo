@@ -9,9 +9,8 @@ app.use(express.json());
 
 mongoose.connect("mongodb://127.0.0.1:27017/reports");
 
-app.post("/reports", (req, res) => {
+app.post("/", (req, res) => {
   const reportData = req.body.reports;
-  // Assuming reportData is an array of report objects, you can create multiple reports
   Report.create(reportData)
     .then((result) => {
       console.log("Data saved successfully:", result);

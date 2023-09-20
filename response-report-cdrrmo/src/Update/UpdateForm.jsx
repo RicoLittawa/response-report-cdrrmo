@@ -13,6 +13,7 @@ import {
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { useFormik } from "formik";
 
 export default function UpdateForm() {
   const { id } = useParams();
@@ -27,8 +28,28 @@ export default function UpdateForm() {
       .catch((error) => {
         console.error("Error fetching data:", error);
       });
+  }, [id]);
+  const formik = useFormik({
+    initialValues: {
+      emergencyType: data.emergencyType,
+      date: data.date,
+      time: data.time,
+      typeOfIncident: "",
+      location: "",
+      nameOfCaller: "",
+      personInvolved: "",
+      nameOfPatient: "",
+      age: "",
+      gender: "",
+      condition: "",
+      actionTaken: "",
+      responders: "",
+      driver: "",
+      dispatch: "",
+      members: "",
+      preparedBy: "",
+    },
   });
-  const handleChange = (e) => {};
 
   return (
     <div className="w-full">
@@ -39,7 +60,7 @@ export default function UpdateForm() {
         </Typography>
       </Link>
 
-      <form className="bg-white px-8 pb-8 mb-4">
+      <form className="bg-white px-8 pb-8 mb-4" onSubmit={formik.handleSubmit}>
         <Typography variant="h4" className="text-gray-700 mb-3">
           Report Information
         </Typography>
@@ -47,55 +68,87 @@ export default function UpdateForm() {
           <Input
             label="Type of Emergency"
             type="text"
-            value={data.emergencyType}
-            onChange={handleChange}
+            value={formik.values.emergencyType}
+            onChange={formik.handleChange}
           />
           <Input
             label="Date"
             type="date"
-            value={data.date}
-            onChange={handleChange}
+            value={formik.values.date}
+            onChange={formik.handleChange}
           />
           <Input
             label="time"
             type="time"
-            value={data.time}
-            onChange={handleChange}
+            value={formik.values.time}
+            onChange={formik.handleChange}
           />
         </div>
         <div className="grid grid-cols-1 gap-3 py-3">
-          <Input label="Type of Incident" type="text" onChange={handleChange} />
-          <Input label="Location" type="text" onChange={handleChange} />
-          <Input label="Name of Caller" type="text" onChange={handleChange} />
+          <Input
+            label="Type of Incident"
+            type="text"
+            onChange={formik.handleChange}
+          />
+          <Input label="Location" type="text" onChange={formik.handleChange} />
+          <Input
+            label="Name of Caller"
+            type="text"
+            onChange={formik.handleChange}
+          />
           <Input
             label="No. of Person Involved"
             type="number"
-            onChange={handleChange}
+            onChange={formik.handleChange}
           />
         </div>
         <Typography variant="h4" className="text-gray-700 py-3">
           Patient Information
         </Typography>
         <div className="grid grid-cols-3 gap-3">
-          <Input label="Name of Patient" type="text" onChange={handleChange} />
-          <Input label="Age" type="number" onChange={handleChange} />
-          <Input label="Gender" type="text" onChange={handleChange} />
-          <Input label="Injury/Condition" type="text" onChange={handleChange} />
-          <Input label="Action Taken" type="text" onChange={handleChange} />
-          <Input label="Responders" type="number" onChange={handleChange} />
+          <Input
+            label="Name of Patient"
+            type="text"
+            onChange={formik.handleChange}
+          />
+          <Input label="Age" type="number" onChange={formik.handleChange} />
+          <Input label="Gender" type="text" onChange={formik.handleChange} />
+          <Input
+            label="Injury/Condition"
+            type="text"
+            onChange={formik.handleChange}
+          />
+          <Input
+            label="Action Taken"
+            type="text"
+            onChange={formik.handleChange}
+          />
+          <Input
+            label="Responders"
+            type="number"
+            onChange={formik.handleChange}
+          />
         </div>
         <Typography variant="h4" className="text-gray-700 py-3">
           Members Responded
         </Typography>
         <div className="grid grid-cols-1 gap-3">
-          <Input label="Driver" type="number" onChange={handleChange} />
-          <Input label="Dispatch" type="number" onChange={handleChange} />
+          <Input label="Driver" type="number" onChange={formik.handleChange} />
+          <Input
+            label="Dispatch"
+            type="number"
+            onChange={formik.handleChange}
+          />
           <Textarea
             label="Members"
             type="number"
-            onChange={handleChange}
+            onChange={formik.handleChange}
           ></Textarea>
-          <Input label="Prepared by" type="number" onChange={handleChange} />
+          <Input
+            label="Prepared by"
+            type="number"
+            onChange={formik.handleChange}
+          />
         </div>
         <div className="flex justify-end">
           <Button
@@ -107,7 +160,8 @@ export default function UpdateForm() {
           >
             Update
           </Button>
-        </div>      </form>
+        </div>{" "}
+      </form>
     </div>
   );
 }

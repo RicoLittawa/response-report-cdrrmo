@@ -117,9 +117,9 @@ export default function UpdateForm() {
                 type="date"
                 name="date"
                 value={formik.values.date}
-                error={formik.touched.date && formik.errors.date ? true : false}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
+                error={formik.touched.date && formik.errors.date ? true : false}
               />
             </div>
             <div>
@@ -138,60 +138,132 @@ export default function UpdateForm() {
                 name="time"
                 value={formik.values.time}
                 onChange={formik.handleChange}
-                error={formik.touched.time && formik.errors.time ? true : false}
                 onBlur={formik.handleBlur}
+                error={formik.touched.time && formik.errors.time ? true : false}
               />
             </div>
           </div>
         </div>
         <div className="grid grid-cols-1 gap-3 py-3">
+          {formik.touched.typeOfIncident && formik.errors.typeOfIncident ? (
+            <Typography variant="small" className="text-red-500">
+              <FontAwesomeIcon className="pr-1" icon={faCircleExclamation} />
+              {formik.errors.typeOfIncident}
+            </Typography>
+          ) : null}
           <Input
             label="Type of Incident"
             type="text"
             name="typeOfIncident"
             value={formik.values.typeOfIncident}
             onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            error={
+              formik.touched.typeOfIncident && formik.errors.typeOfIncident
+                ? true
+                : false
+            }
           />
+          {formik.touched.location && formik.errors.location ? (
+            <Typography variant="small" className="text-red-500">
+              <FontAwesomeIcon className="pr-1" icon={faCircleExclamation} />
+              {formik.errors.location}
+            </Typography>
+          ) : null}
           <Input
             label="Location"
             type="text"
             name="location"
             onChange={formik.handleChange}
             value={formik.values.location}
+            onBlur={formik.handleBlur}
+            error={
+              formik.touched.location && formik.errors.location ? true : false
+            }
           />
+          {formik.touched.nameOfCaller && formik.errors.nameOfCaller ? (
+            <Typography variant="small" className="text-red-500">
+              <FontAwesomeIcon className="pr-1" icon={faCircleExclamation} />
+              {formik.errors.nameOfCaller}
+            </Typography>
+          ) : null}
           <Input
             label="Name of Caller"
             type="text"
             name="nameOfCaller"
             value={formik.values.nameOfCaller}
             onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            error={
+              formik.touched.nameOfCaller && formik.errors.nameOfCaller
+                ? true
+                : false
+            }
           />
+          {formik.touched.personInvolved && formik.errors.personInvolved ? (
+            <Typography variant="small" className="text-red-500">
+              <FontAwesomeIcon className="pr-1" icon={faCircleExclamation} />
+              {formik.errors.personInvolved}
+            </Typography>
+          ) : null}
           <Input
             label="No. of Person Involved"
             type="number"
             name="personInvolved"
             value={formik.values.personInvolved}
             onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            error={
+              formik.touched.personInvolved && formik.errors.personInvolved
+                ? true
+                : false
+            }
           />
         </div>
         <Typography variant="h4" className="text-gray-700 py-3">
           Patient Information
         </Typography>
-        <div className="grid grid-cols-3 gap-3">
+        <div className="grid grid-cols-1 gap-3">
+          {formik.touched.nameOfPatient && formik.errors.nameOfPatient ? (
+            <Typography variant="small" className="text-red-500">
+              <FontAwesomeIcon className="pr-1" icon={faCircleExclamation} />
+              {formik.errors.nameOfPatient}
+            </Typography>
+          ) : null}
           <Input
             label="Name of Patient"
             type="text"
             name="nameOfPatient"
             value={formik.values.nameOfPatient}
             onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            error={
+              formik.touched.nameOfPatient && formik.errors.nameOfPatient
+                ? true
+                : false
+            }
           />
+          {formik.touched.age && formik.errors.age ? (
+            <Typography variant="small" className="text-red-500">
+              <FontAwesomeIcon className="pr-1" icon={faCircleExclamation} />
+              {formik.errors.age}
+            </Typography>
+          ) : null}
           <Input
             label="Age"
             type="number"
             name="age"
             value={formik.values.age}
             onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            error={formik.touched.age && formik.errors.age ? true : false}
           />
+          {formik.touched.gender && formik.errors.gender ? (
+            <Typography variant="small" className="text-red-500">
+              <FontAwesomeIcon className="pr-1" icon={faCircleExclamation} />
+              {formik.errors.gender}
+            </Typography>
+          ) : null}
           <Select
             label="Select Gender"
             name="gender"
@@ -203,6 +275,7 @@ export default function UpdateForm() {
             }}
             onBlur={formik.handleBlur}
             value={formik.values.gender}
+            error={formik.touched.gender && formik.errors.gender ? true : false}
           >
             {genderArray.map((gen) => (
               <Option key={gen} value={gen}>
@@ -210,60 +283,133 @@ export default function UpdateForm() {
               </Option>
             ))}
           </Select>
-
+          {formik.touched.condition && formik.errors.condition ? (
+            <Typography variant="small" className="text-red-500">
+              <FontAwesomeIcon className="pr-1" icon={faCircleExclamation} />
+              {formik.errors.condition}
+            </Typography>
+          ) : null}
           <Input
             label="Injury/Condition"
             type="text"
             name="condition"
             value={formik.values.condition}
             onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            error={
+              formik.touched.condition && formik.errors.condition ? true : false
+            }
           />
+          {formik.touched.actionTaken && formik.errors.actionTaken ? (
+            <Typography variant="small" className="text-red-500">
+              <FontAwesomeIcon className="pr-1" icon={faCircleExclamation} />
+              {formik.errors.actionTaken}
+            </Typography>
+          ) : null}
           <Input
             label="Action Taken"
             type="text"
             name="actionTaken"
             value={formik.values.actionTaken}
             onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            error={
+              formik.touched.actionTaken && formik.errors.actionTaken
+                ? true
+                : false
+            }
           />
+          {formik.touched.responders && formik.errors.responders ? (
+            <Typography variant="small" className="text-red-500">
+              <FontAwesomeIcon className="pr-1" icon={faCircleExclamation} />
+              {formik.errors.responders}
+            </Typography>
+          ) : null}
           <Input
             label="Responders"
             type="number"
             name="responders"
             value={formik.values.responders}
             onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            error={
+              formik.touched.responders && formik.errors.responders
+                ? true
+                : false
+            }
           />
         </div>
         <Typography variant="h4" className="text-gray-700 py-3">
           Members Responded
         </Typography>
         <div className="grid grid-cols-1 gap-3">
+          {formik.touched.driver && formik.errors.driver ? (
+            <Typography variant="small" className="text-red-500">
+              <FontAwesomeIcon className="pr-1" icon={faCircleExclamation} />
+              {formik.errors.driver}
+            </Typography>
+          ) : null}
           <Input
             label="Driver"
             type="text"
             name="driver"
             value={formik.values.driver}
             onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            error={formik.touched.driver && formik.errors.driver ? true : false}
           />
+          {formik.touched.dispatch && formik.errors.dispatch ? (
+            <Typography variant="small" className="text-red-500">
+              <FontAwesomeIcon className="pr-1" icon={faCircleExclamation} />
+              {formik.errors.dispatch}
+            </Typography>
+          ) : null}
           <Input
             label="Dispatch"
             type="text"
             name="dispatch"
             value={formik.values.dispatch}
             onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            error={
+              formik.touched.dispatch && formik.errors.dispatch ? true : false
+            }
           />
+          {formik.touched.members && formik.errors.members ? (
+            <Typography variant="small" className="text-red-500">
+              <FontAwesomeIcon className="pr-1" icon={faCircleExclamation} />
+              {formik.errors.members}
+            </Typography>
+          ) : null}
           <Textarea
             label="Members"
             type="text"
             name="members"
             value={formik.values.members}
             onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            error={
+              formik.touched.members && formik.errors.members ? true : false
+            }
           ></Textarea>
+          {formik.touched.preparedBy && formik.errors.preparedBy ? (
+            <Typography variant="small" className="text-red-500">
+              <FontAwesomeIcon className="pr-1" icon={faCircleExclamation} />
+              {formik.errors.preparedBy}
+            </Typography>
+          ) : null}
           <Input
             label="Prepared by"
             type="text"
             name="preparedBy"
             value={formik.values.preparedBy}
             onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            error={
+              formik.touched.preparedBy && formik.errors.preparedBy
+                ? true
+                : false
+            }
           />
         </div>
         <div className="flex justify-end">

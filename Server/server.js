@@ -1,7 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
-const Report = require("./Models/reports");
+const Report = require("./Models/Reports.js");
 
 const app = express();
 app.use(cors());
@@ -9,6 +9,7 @@ app.use(express.json());
 
 mongoose.connect("mongodb://127.0.0.1:27017/reports");
 
+//Put Request
 app.post("/", (req, res) => {
   const reportData = req.body.reports;
   Report.create(reportData)
@@ -22,6 +23,7 @@ app.post("/", (req, res) => {
     });
 });
 
+//Fetch data for table
 app.get("/reports", (req, res) => {
   Report.find()
     .then((reports) => {
@@ -33,6 +35,7 @@ app.get("/reports", (req, res) => {
     });
 });
 
+//Fetch data for update
 app.get("/reports/:id", (req, res) => {
   const { id } = req.params;
   Report.findById(id) // Use findById to find a report by its ID
@@ -47,6 +50,7 @@ app.get("/reports/:id", (req, res) => {
       res.status(500).json({ message: "Server error" });
     });
 });
+
 
 app.listen(3000, () => {
   console.log("Server is running");

@@ -18,6 +18,7 @@ import { useFormik } from "formik";
 export default function UpdateForm() {
   const { id } = useParams();
   const [data, setData] = useState({});
+  const genderArray = ["Male", "Female"];
 
   useEffect(() => {
     axios
@@ -30,14 +31,15 @@ export default function UpdateForm() {
       });
   }, [id]);
   const formik = useFormik({
+    enableReinitialize: true,
     initialValues: {
-      emergencyType: data.emergencyType,
-      date: data.date,
-      time: data.time,
-      typeOfIncident: "",
-      location: "",
-      nameOfCaller: "",
-      personInvolved: "",
+      emergencyType: data.emergencyType || "",
+      date: data.date || "",
+      time: data.time || "",
+      typeOfIncident: data.typeOfIncident || "",
+      location: data.location || "",
+      nameOfCaller: data.nameOfCaller || "",
+      personInvolved: data.personInvolved || "",
       nameOfPatient: "",
       age: "",
       gender: "",
@@ -48,9 +50,10 @@ export default function UpdateForm() {
       dispatch: "",
       members: "",
       preparedBy: "",
+      ...data.patientInformation,
+      ...data.membersResponded,
     },
   });
-
   return (
     <div className="w-full">
       <Link to="/" className="flex  px-8 pb-8 mt-3">
@@ -68,18 +71,21 @@ export default function UpdateForm() {
           <Input
             label="Type of Emergency"
             type="text"
+            name="emergencyType"
             value={formik.values.emergencyType}
             onChange={formik.handleChange}
           />
           <Input
             label="Date"
             type="date"
+            name="date"
             value={formik.values.date}
             onChange={formik.handleChange}
           />
           <Input
             label="time"
             type="time"
+            name="time"
             value={formik.values.time}
             onChange={formik.handleChange}
           />
@@ -88,17 +94,29 @@ export default function UpdateForm() {
           <Input
             label="Type of Incident"
             type="text"
+            name="typeOfIncident"
+            value={formik.values.typeOfIncident}
             onChange={formik.handleChange}
           />
-          <Input label="Location" type="text" onChange={formik.handleChange} />
+          <Input
+            label="Location"
+            type="text"
+            name="location"
+            onChange={formik.handleChange}
+            value={formik.values.location}
+          />
           <Input
             label="Name of Caller"
             type="text"
+            name="nameOfCaller"
+            value={formik.values.nameOfCaller}
             onChange={formik.handleChange}
           />
           <Input
             label="No. of Person Involved"
             type="number"
+            name="personInvolved"
+            value={formik.values.personInvolved}
             onChange={formik.handleChange}
           />
         </div>
@@ -109,23 +127,55 @@ export default function UpdateForm() {
           <Input
             label="Name of Patient"
             type="text"
+            name="nameOfPatient"
+            value={formik.values.nameOfPatient}
             onChange={formik.handleChange}
           />
-          <Input label="Age" type="number" onChange={formik.handleChange} />
-          <Input label="Gender" type="text" onChange={formik.handleChange} />
+          <Input
+            label="Age"
+            type="number"
+            name="age"
+            value={formik.values.age}
+            onChange={formik.handleChange}
+          />
+          <Select
+            label="Select Gender"
+            name="gender"
+            onChange={(e) => {
+              // Manually set the value in Formik's state
+              formik.setFieldValue("gender", e);
+              // Call Formik's onChange to trigger validation
+              formik.handleChange(e);
+            }}
+            onBlur={formik.handleBlur}
+            value={formik.values.gender}
+          >
+            {genderArray.map((gen) => (
+              <Option key={gen} value={gen}>
+                {gen}
+              </Option>
+            ))}
+          </Select>
+
           <Input
             label="Injury/Condition"
             type="text"
+            name="condition"
+            value={formik.values.condition}
             onChange={formik.handleChange}
           />
           <Input
             label="Action Taken"
             type="text"
+            name="actionTaken"
+            value={formik.values.actionTaken}
             onChange={formik.handleChange}
           />
           <Input
             label="Responders"
             type="number"
+            name="responders"
+            value={formik.values.responders}
             onChange={formik.handleChange}
           />
         </div>
@@ -133,20 +183,32 @@ export default function UpdateForm() {
           Members Responded
         </Typography>
         <div className="grid grid-cols-1 gap-3">
-          <Input label="Driver" type="number" onChange={formik.handleChange} />
+          <Input
+            label="Driver"
+            type="text"
+            name="driver"
+            value={formik.values.driver}
+            onChange={formik.handleChange}
+          />
           <Input
             label="Dispatch"
-            type="number"
+            type="text"
+            name="dispatch"
+            value={formik.values.dispatch}
             onChange={formik.handleChange}
           />
           <Textarea
             label="Members"
-            type="number"
+            type="text"
+            name="members"
+            value={formik.values.members}
             onChange={formik.handleChange}
           ></Textarea>
           <Input
             label="Prepared by"
-            type="number"
+            type="text"
+            name="preparedBy"
+            value={formik.values.preparedBy}
             onChange={formik.handleChange}
           />
         </div>
@@ -160,7 +222,7 @@ export default function UpdateForm() {
           >
             Update
           </Button>
-        </div>{" "}
+        </div>
       </form>
     </div>
   );

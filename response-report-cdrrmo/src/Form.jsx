@@ -13,7 +13,10 @@ import {
   Textarea,
 } from "@material-tailwind/react";
 
-const validationSchema = Yup.object().shape({
+export const genderArray = ["Male", "Female"];
+const currDate = new Date();
+const formattedDate = currDate.toISOString().split("T")[0];
+export const validationSchema = Yup.object().shape({
   date: Yup.string().required("Date is required"),
   time: Yup.string().required("Time is required"),
   emergencyType: Yup.string()
@@ -36,12 +39,8 @@ const validationSchema = Yup.object().shape({
   members: Yup.string().required("Members is required"),
   preparedBy: Yup.string().required("Prepared by is required"),
 });
+
 export default function Form() {
-  const currDate = new Date();
-  const formattedDate = currDate.toISOString().split("T")[0];
-  const genderArray = ["Male", "Female"];
-
-
   const formik = useFormik({
     initialValues: {
       emergencyType: "",

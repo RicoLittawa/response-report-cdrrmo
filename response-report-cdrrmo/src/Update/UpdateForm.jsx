@@ -1,6 +1,9 @@
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import {
+  faArrowLeft,
+  faCircleExclamation,
+} from "@fortawesome/free-solid-svg-icons";
 import {
   Button,
   Radio,
@@ -14,11 +17,10 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useFormik } from "formik";
-
+import { genderArray, validationSchema } from "../Form";
 export default function UpdateForm() {
   const { id } = useParams();
   const [data, setData] = useState({});
-  const genderArray = ["Male", "Female"];
 
   useEffect(() => {
     axios
@@ -53,6 +55,7 @@ export default function UpdateForm() {
       ...data.patientInformation,
       ...data.membersResponded,
     },
+    validationSchema,
   });
   return (
     <div className="w-full">
@@ -67,28 +70,79 @@ export default function UpdateForm() {
         <Typography variant="h4" className="text-gray-700 mb-3">
           Report Information
         </Typography>
-        <div className="grid grid-cols-3 gap-3">
-          <Input
-            label="Type of Emergency"
-            type="text"
-            name="emergencyType"
-            value={formik.values.emergencyType}
-            onChange={formik.handleChange}
-          />
-          <Input
-            label="Date"
-            type="date"
-            name="date"
-            value={formik.values.date}
-            onChange={formik.handleChange}
-          />
-          <Input
-            label="time"
-            type="time"
-            name="time"
-            value={formik.values.time}
-            onChange={formik.handleChange}
-          />
+
+        <div className="grid grid-cols-2 gap-3">
+          <div id="emergencyType" className="mb-2">
+            <Typography variant="small" className="text-gray-700">
+              Type of Emergency
+            </Typography>
+            {formik.touched.emergencyType && formik.errors.emergencyType ? (
+              <Typography variant="small" className="text-red-500">
+                <FontAwesomeIcon className="pr-1" icon={faCircleExclamation} />
+                {formik.errors.emergencyType}
+              </Typography>
+            ) : null}
+            <div>
+              <Radio
+                name="emergencyType"
+                label="Medical"
+                color="green"
+                checked={formik.values.emergencyType === "medical"}
+                onChange={formik.handleChange}
+                value="medical"
+              />
+              <Radio
+                name="emergencyType"
+                label="Trauma"
+                color="green"
+                checked={formik.values.emergencyType === "trauma"}
+                onChange={formik.handleChange}
+                value="trauma"
+              />
+            </div>
+          </div>
+          <div className="place-self-end">
+            <div className="pb-3">
+              {formik.touched.date && formik.errors.date ? (
+                <Typography variant="small" className="text-red-500">
+                  <FontAwesomeIcon
+                    className="pr-1"
+                    icon={faCircleExclamation}
+                  />
+                  {formik.errors.date}
+                </Typography>
+              ) : null}
+              <Input
+                label="Date"
+                type="date"
+                name="date"
+                value={formik.values.date}
+                error={formik.touched.date && formik.errors.date ? true : false}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+              />
+            </div>
+            <div>
+              {formik.touched.time && formik.errors.time ? (
+                <Typography variant="small" className="text-red-500">
+                  <FontAwesomeIcon
+                    className="pr-1"
+                    icon={faCircleExclamation}
+                  />
+                  {formik.errors.time}
+                </Typography>
+              ) : null}
+              <Input
+                label="time"
+                type="time"
+                name="time"
+                value={formik.values.time}
+                onChange={formik.handleChange}
+                error={formik.touched.time && formik.errors.time ? true : false}
+                onBlur={formik.handleBlur}
+              />
+            </div>
+          </div>
         </div>
         <div className="grid grid-cols-1 gap-3 py-3">
           <Input

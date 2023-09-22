@@ -18,7 +18,7 @@ export default function Table() {
     setSize(value);
     if (id) {
       axios
-        .get(`http://localhost:3000/reports/${id}`)
+        .get(`http://localhost:3000/update/${id}`)
         .then((response) => {
           setReport(response.data);
         })

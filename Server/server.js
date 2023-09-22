@@ -10,7 +10,7 @@ app.use(express.json());
 mongoose.connect("mongodb://127.0.0.1:27017/reports");
 
 //Put Request
-app.post("/", (req, res) => {
+app.post("/reports", (req, res) => {
   const reportData = req.body.reports;
   Report.create(reportData)
     .then((result) => {

@@ -1,6 +1,5 @@
 import axios from "axios";
 import { useFormik } from "formik";
-import * as Yup from "yup";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleExclamation } from "@fortawesome/free-solid-svg-icons";
 import {
@@ -12,35 +11,12 @@ import {
   Option,
   Textarea,
 } from "@material-tailwind/react";
+import { validationSchema, genderArray } from "./Components/constants";
+import LoadingState from "./Components/LoadingState";
 
-export const genderArray = ["Male", "Female"];
-const currDate = new Date();
-const formattedDate = currDate.toISOString().split("T")[0];
-export const validationSchema = Yup.object().shape({
-  date: Yup.string().required("Date is required"),
-  time: Yup.string().required("Time is required"),
-  emergencyType: Yup.string()
-    .required("Emergency type is required")
-    .oneOf(["medical", "trauma"], "Invalid emergency type"),
-  typeOfIncident: Yup.string().required("Type of incident is required"),
-  location: Yup.string().required("Location is required"),
-  nameOfCaller: Yup.string().required("Name of caller is required"),
-  personInvolved: Yup.string().required("No. of person invloved is required"),
-  nameOfPatient: Yup.string().required("Name of patient is required"),
-  age: Yup.string().required("Age is required"),
-  gender: Yup.string()
-    .required("Gender is required")
-    .oneOf(["Male", "Female"], "Invalid gender type"),
-  condition: Yup.string().required("Injury/Condition is required"),
-  actionTaken: Yup.string().required("Action taken is required"),
-  responders: Yup.string().required("Responders is required"),
-  driver: Yup.string().required("Driver is required"),
-  dispatch: Yup.string().required("Dispatch is required"),
-  members: Yup.string().required("Members is required"),
-  preparedBy: Yup.string().required("Prepared by is required"),
-});
-
-export default function Form() {
+export default function Form({ loading, setLoading }) {
+  const currDate = new Date();
+  const formattedDate = currDate.toISOString().split("T")[0];
   const formik = useFormik({
     initialValues: {
       emergencyType: "",
@@ -63,6 +39,7 @@ export default function Form() {
     },
     validationSchema,
     onSubmit: (values, { resetForm }) => {
+      console.log("work");
       const reportData = {
         emergencyType: values.emergencyType,
         date: values.date,
@@ -86,13 +63,19 @@ export default function Form() {
           preparedBy: values.preparedBy,
         },
       };
-      axios
-        .post("http://localhost:3000/", { reports: reportData })
-        .then((result) => {
-          console.log(result);
-          resetForm();
-        })
-        .catch((err) => console.log(err));
+      setLoading(true);
+      setTimeout(() => {
+        axios
+          .post("http://localhost:3000/reports", { reports: reportData })
+          .then((result) => {
+            console.log(result);
+            resetForm();
+          })
+          .catch((err) => console.log(err))
+          .finally(() => {
+            setLoading(false);
+          });
+      }, 1000);
     },
   });
 
@@ -434,7 +417,7 @@ export default function Form() {
             color="green"
             className="mt-2"
           >
-            Save
+            {loading ? <LoadingState /> : "Save"}
           </Button>
         </div>
       </form>

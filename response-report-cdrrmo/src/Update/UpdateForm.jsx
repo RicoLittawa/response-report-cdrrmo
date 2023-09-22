@@ -17,7 +17,7 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useFormik } from "formik";
-import { genderArray, validationSchema } from "../Form";
+import { genderArray, validationSchema } from "../Components/constants";
 export default function UpdateForm() {
   const { id } = useParams();
   const [data, setData] = useState({});
@@ -57,7 +57,7 @@ export default function UpdateForm() {
       ...data.membersResponded,
     },
     validationSchema,
-    onSubmit: (values) => {
+    onSubmit: (values,{ resetForm }) => {
       const updatedData = {
         emergencyType: values.emergencyType,
         date: values.date,
@@ -86,6 +86,7 @@ export default function UpdateForm() {
         .put(`http://localhost:3000/update/${id}`, { reports: updatedData })
         .then((result) => {
           console.log(result);
+          resetForm()
           navigate("/");
         })
         .catch((err) => {

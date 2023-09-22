@@ -4,6 +4,7 @@ import Home from "./Home";
 import Update from "./Update/Update"
 
 function App() {
+  
   return (
     <>
       <BrowserRouter>

@@ -40,7 +40,7 @@ export default function Table() {
   // Function to fetch data from the server
   const fetchData = () => {
     axios
-      .get("http://localhost:3000/reports")
+      .get("http://localhost:3000/")
       .then((response) => {
         setData(response.data);
       })

@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faArrowLeft,
@@ -21,10 +21,11 @@ import { genderArray, validationSchema } from "../Form";
 export default function UpdateForm() {
   const { id } = useParams();
   const [data, setData] = useState({});
+  const navigate = useNavigate();
 
   useEffect(() => {
     axios
-      .get(`http://localhost:3000/reports/${id}`)
+      .get(`http://localhost:3000/update/${id}`)
       .then((response) => {
         setData(response.data);
       })
@@ -56,6 +57,41 @@ export default function UpdateForm() {
       ...data.membersResponded,
     },
     validationSchema,
+    onSubmit: (values) => {
+      const updatedData = {
+        emergencyType: values.emergencyType,
+        date: values.date,
+        time: values.time,
+        typeOfIncident: values.typeOfIncident,
+        location: values.location,
+        nameOfCaller: values.nameOfCaller,
+        personInvolved: values.personInvolved,
+        patientInformation: {
+          nameOfPatient: values.nameOfPatient,
+          age: values.age,
+          gender: values.gender,
+          condition: values.condition,
+          actionTaken: values.actionTaken,
+          responders: values.responders,
+        },
+        membersResponded: {
+          driver: values.driver,
+          dispatch: values.dispatch,
+          members: values.members,
+          preparedBy: values.preparedBy,
+        },
+      };
+
+      axios
+        .put(`http://localhost:3000/update/${id}`, { reports: updatedData })
+        .then((result) => {
+          console.log(result);
+          navigate("/");
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
   });
   return (
     <div className="w-full">
@@ -67,10 +103,9 @@ export default function UpdateForm() {
       </Link>
 
       <form className="bg-white px-8 pb-8 mb-4" onSubmit={formik.handleSubmit}>
-        <Typography variant="h4" className="text-gray-700 mb-3">
+        <Typography variant="h4" className="text-gray-700 py-3">
           Report Information
         </Typography>
-
         <div className="grid grid-cols-2 gap-3">
           <div id="emergencyType" className="mb-2">
             <Typography variant="small" className="text-gray-700">

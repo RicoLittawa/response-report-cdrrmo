@@ -102,10 +102,10 @@ export default function Form() {
         className="bg-white px-8 pt-6 pb-8 mb-4"
         onSubmit={formik.handleSubmit}
       >
-        <Typography variant="h4" className="text-gray-700">
+        <Typography variant="h4" className="text-gray-700 py-3">
           Report Information
         </Typography>
-        <div className="grid grid-cols-2">
+        <div className="grid grid-cols-2 pb-3">
           <div id="emergencyType" className="px-3 mb-2">
             <Typography variant="small" className="text-gray-700">
               Type of Emergency
@@ -178,7 +178,7 @@ export default function Form() {
             </div>
           </div>
         </div>
-        <div className="py-3">
+        <div className="grid grid-cols-1 gap-3">
           {formik.touched.typeOfIncident && formik.errors.typeOfIncident ? (
             <Typography variant="small" className="text-red-500">
               <FontAwesomeIcon className="pr-1" icon={faCircleExclamation} />
@@ -198,8 +198,6 @@ export default function Form() {
                 : false
             }
           />
-        </div>
-        <div className="py-3">
           {formik.touched.location && formik.errors.location ? (
             <Typography variant="small" className="text-red-500">
               <FontAwesomeIcon className="pr-1" icon={faCircleExclamation} />
@@ -217,8 +215,6 @@ export default function Form() {
               formik.touched.location && formik.errors.location ? true : false
             }
           />
-        </div>
-        <div className="py-3">
           {formik.touched.nameOfCaller && formik.errors.nameOfCaller ? (
             <Typography variant="small" className="text-red-500">
               <FontAwesomeIcon className="pr-1" icon={faCircleExclamation} />
@@ -238,8 +234,6 @@ export default function Form() {
                 : false
             }
           />
-        </div>
-        <div className="py-3">
           {formik.touched.personInvolved && formik.errors.personInvolved ? (
             <Typography variant="small" className="text-red-500">
               <FontAwesomeIcon className="pr-1" icon={faCircleExclamation} />
@@ -263,7 +257,7 @@ export default function Form() {
         <Typography variant="h4" className="text-gray-700 py-3">
           Patient Information
         </Typography>
-        <div className="py-3">
+        <div className="grid grid-cols-1  gap-3">
           {formik.touched.nameOfPatient && formik.errors.nameOfPatient ? (
             <Typography variant="small" className="text-red-500">
               <FontAwesomeIcon className="pr-1" icon={faCircleExclamation} />
@@ -283,8 +277,6 @@ export default function Form() {
                 : false
             }
           />
-        </div>
-        <div className="py-3">
           {formik.touched.age && formik.errors.age ? (
             <Typography variant="small" className="text-red-500">
               <FontAwesomeIcon className="pr-1" icon={faCircleExclamation} />
@@ -300,8 +292,6 @@ export default function Form() {
             onBlur={formik.handleBlur}
             error={formik.touched.age && formik.errors.age ? true : false}
           />
-        </div>
-        <div className="py-3">
           {formik.touched.gender && formik.errors.gender ? (
             <Typography variant="small" className="text-red-500">
               <FontAwesomeIcon className="pr-1" icon={faCircleExclamation} />
@@ -327,8 +317,6 @@ export default function Form() {
               </Option>
             ))}
           </Select>
-        </div>
-        <div className="py-3">
           {formik.touched.condition && formik.errors.condition ? (
             <Typography variant="small" className="text-red-500">
               <FontAwesomeIcon className="pr-1" icon={faCircleExclamation} />
@@ -346,29 +334,6 @@ export default function Form() {
               formik.touched.condition && formik.errors.condition ? true : false
             }
           />
-        </div>
-        <div className="py-3">
-          {formik.touched.actionTaken && formik.errors.actionTaken ? (
-            <Typography variant="small" className="text-red-500">
-              <FontAwesomeIcon className="pr-1" icon={faCircleExclamation} />
-              {formik.errors.actionTaken}
-            </Typography>
-          ) : null}
-          <Input
-            type="text"
-            name="actionTaken"
-            label="Action Taken"
-            onChange={formik.handleChange}
-            value={formik.values.actionTaken}
-            onBlur={formik.handleBlur}
-            error={
-              formik.touched.actionTaken && formik.errors.actionTaken
-                ? true
-                : false
-            }
-          />
-        </div>
-        <div className="py-3">
           {formik.touched.responders && formik.errors.responders ? (
             <Typography variant="small" className="text-red-500">
               <FontAwesomeIcon className="pr-1" icon={faCircleExclamation} />
@@ -392,7 +357,7 @@ export default function Form() {
         <Typography variant="h4" className="text-gray-700 py-3">
           Members Responded
         </Typography>
-        <div className="py-3">
+        <div className="grid grid-cols-1 gap-3">
           {formik.touched.driver && formik.errors.driver ? (
             <Typography variant="small" className="text-red-500">
               <FontAwesomeIcon className="pr-1" icon={faCircleExclamation} />
@@ -408,8 +373,6 @@ export default function Form() {
             onBlur={formik.handleBlur}
             error={formik.touched.driver && formik.errors.driver ? true : false}
           />
-        </div>
-        <div className="py-3">
           {formik.touched.dispatch && formik.errors.dispatch ? (
             <Typography variant="small" className="text-red-500">
               <FontAwesomeIcon className="pr-1" icon={faCircleExclamation} />
@@ -427,8 +390,6 @@ export default function Form() {
               formik.touched.dispatch && formik.errors.dispatch ? true : false
             }
           />
-        </div>
-        <div className="py-3">
           {formik.touched.members && formik.errors.members ? (
             <Typography variant="small" className="text-red-500">
               <FontAwesomeIcon className="pr-1" icon={faCircleExclamation} />
@@ -446,8 +407,6 @@ export default function Form() {
               formik.touched.members && formik.errors.members ? true : false
             }
           ></Textarea>
-        </div>
-        <div className="py-3">
           {formik.touched.preparedBy && formik.errors.preparedBy ? (
             <Typography variant="small" className="text-red-500">
               <FontAwesomeIcon className="pr-1" icon={faCircleExclamation} />

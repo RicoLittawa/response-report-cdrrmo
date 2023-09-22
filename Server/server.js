@@ -24,7 +24,7 @@ app.post("/", (req, res) => {
 });
 
 //Fetch data for table
-app.get("/reports", (req, res) => {
+app.get("/", (req, res) => {
   Report.find()
     .then((reports) => {
       res.json(reports);
@@ -36,7 +36,7 @@ app.get("/reports", (req, res) => {
 });
 
 //Fetch data for update
-app.get("/reports/:id", (req, res) => {
+app.get("/update/:id", (req, res) => {
   const { id } = req.params;
   Report.findById(id) // Use findById to find a report by its ID
     .then((reports) => {
@@ -51,7 +51,22 @@ app.get("/reports/:id", (req, res) => {
     });
 });
 
-
+//Update data of reports
+app.put("/update/:id", (req, res) => {
+  const { id } = req.params;
+  const updatedData = req.body.reports;
+  Report.findByIdAndUpdate(id, updatedData, { new: true })
+    .then((updatedReport) => {
+      if (!updatedReport) {
+        return res.status(404).json({ message: "Report not updated" });
+      }
+      res.json(updatedReport);
+    })
+    .catch((error) => {
+      console.error("Error fetching report:", error);
+      res.status(500).json({ message: "Server error" });
+    });
+});
 app.listen(3000, () => {
   console.log("Server is running");
 });

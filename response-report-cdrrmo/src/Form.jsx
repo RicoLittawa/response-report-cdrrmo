@@ -63,18 +63,14 @@ export default function Form({ loading, setLoading }) {
           preparedBy: values.preparedBy,
         },
       };
-      setLoading(true);
       setTimeout(() => {
         axios
-          .post("http://localhost:3000/reports", { reports: reportData })
+          .post("http://localhost:3000/", { reports: reportData })
           .then((result) => {
             console.log(result);
             resetForm();
           })
-          .catch((err) => console.log(err))
-          .finally(() => {
-            setLoading(false);
-          });
+          .catch((err) => console.log(err));
       }, 1000);
     },
   });
@@ -315,6 +311,25 @@ export default function Form({ loading, setLoading }) {
             onBlur={formik.handleBlur}
             error={
               formik.touched.condition && formik.errors.condition ? true : false
+            }
+          />
+          {formik.touched.actionTaken && formik.errors.actionTaken ? (
+            <Typography variant="small" className="text-red-500">
+              <FontAwesomeIcon className="pr-1" icon={faCircleExclamation} />
+              {formik.errors.actionTaken}
+            </Typography>
+          ) : null}
+          <Input
+            type="number"
+            name="actionTaken"
+            label="Action Taken"
+            onChange={formik.handleChange}
+            value={formik.values.actionTaken}
+            onBlur={formik.handleBlur}
+            error={
+              formik.touched.actionTaken && formik.errors.actionTaken
+                ? true
+                : false
             }
           />
           {formik.touched.responders && formik.errors.responders ? (

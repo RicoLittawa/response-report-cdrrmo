@@ -63,6 +63,7 @@ export default function Form({ loading, setLoading }) {
           preparedBy: values.preparedBy,
         },
       };
+      setLoading(true);
       setTimeout(() => {
         axios
           .post("http://localhost:3000/", { reports: reportData })
@@ -70,7 +71,10 @@ export default function Form({ loading, setLoading }) {
             console.log(result);
             resetForm();
           })
-          .catch((err) => console.log(err));
+          .catch((err) => console.log(err))
+          .finally(() => {
+            setLoading(false);
+          });
       }, 1000);
     },
   });

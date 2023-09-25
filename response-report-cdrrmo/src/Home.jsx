@@ -11,8 +11,8 @@ export default function Home() {
       <main className="flex justify-center">
         <section className="bg-white block shadow-md">
           <Header />
-          <Form loading={loading} setLoading={setLoading} />
-          <Table loading={loading} setLoading={setLoading} />
+          <Form/>
+          <Table />
         </section>
       </main>
     </>

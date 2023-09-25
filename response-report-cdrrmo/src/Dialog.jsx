@@ -45,12 +45,7 @@ export default function DialogMessage({ open, size, handleOpen, report }) {
     <>
       <Dialog
         open={
-          size === "xs" ||
-          size === "sm" ||
-          size === "md" ||
-          size === "lg" ||
-          size === "xl" ||
-          size === "xxl"
+       open
         }
         size={size || "md"}
         handler={handleOpen}

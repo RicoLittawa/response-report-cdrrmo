@@ -8,10 +8,10 @@ import DialogMessage from "./Dialog";
 import { Link } from "react-router-dom";
 export default function Table() {
   const [data, setData] = useState([]);
-  const [open, setOpen] = useState(false);
   const [size, setSize] = useState(null);
   // const [id,setId]= useState(null);
   const [report, setReport] = useState({});
+  const [open, setOpen] = useState(false);
 
   const handleOpen = (value, id) => {
     setOpen(!open);

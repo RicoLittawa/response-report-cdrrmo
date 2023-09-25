@@ -18,6 +18,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useFormik } from "formik";
 import { genderArray, validationSchema } from "../Components/constants";
+import LoadingState from "../Components/LoadingState";
 export default function UpdateForm() {
   const { id } = useParams();
   const [data, setData] = useState({});

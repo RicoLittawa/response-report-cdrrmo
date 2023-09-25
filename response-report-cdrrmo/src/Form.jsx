@@ -13,10 +13,15 @@ import {
 } from "@material-tailwind/react";
 import { validationSchema, genderArray } from "./Components/constants";
 import LoadingState from "./Components/LoadingState";
+import AlertMessage from "./Components/AlertMessage";
+import { useState } from "react";
+import useLoading from "./Components/scripts/useLoading";
 
-export default function Form({ loading, setLoading }) {
+export default function Form() {
   const currDate = new Date();
   const formattedDate = currDate.toISOString().split("T")[0];
+  const [message, setMessage] = useState(false);
+  const { loading, startLoading, stopLoading } = useLoading();
   const formik = useFormik({
     initialValues: {
       emergencyType: "",
@@ -63,7 +68,7 @@ export default function Form({ loading, setLoading }) {
           preparedBy: values.preparedBy,
         },
       };
-      setLoading(true);
+      startLoading();
       setTimeout(() => {
         axios
           .post("http://localhost:3000/", { reports: reportData })
@@ -73,7 +78,8 @@ export default function Form({ loading, setLoading }) {
           })
           .catch((err) => console.log(err))
           .finally(() => {
-            setLoading(false);
+            stopLoading();
+            setMessage(true);
           });
       }, 1000);
     },
@@ -429,17 +435,20 @@ export default function Form({ loading, setLoading }) {
           />
         </div>
         <div className="flex justify-end">
-          <Button
-            type="submit"
-            variant="gradient"
-            size="md"
-            color="green"
-            className="mt-2"
-          >
-            {loading ? <LoadingState /> : "Save"}
-          </Button>
+          {!message && (
+            <Button
+              type="submit"
+              variant="gradient"
+              size="md"
+              color="green"
+              className="mt-2"
+            >
+              {loading ? <LoadingState /> : "Save"}
+            </Button>
+          )}
         </div>
       </form>
+      <AlertMessage message={message} setMessage={setMessage} />
     </div>
   );
 }

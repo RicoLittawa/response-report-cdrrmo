@@ -19,10 +19,13 @@ import axios from "axios";
 import { useFormik } from "formik";
 import { genderArray, validationSchema } from "../Components/constants";
 import LoadingState from "../Components/LoadingState";
+import AlertMessage from "../Components/AlertMessage";
+import useLoading from "../Components/scripts/useLoading";
 export default function UpdateForm() {
   const { id } = useParams();
   const [data, setData] = useState({});
   const navigate = useNavigate();
+  const { loading, startLoading, stopLoading } = useLoading();
 
   useEffect(() => {
     axios
@@ -58,7 +61,7 @@ export default function UpdateForm() {
       ...data.membersResponded,
     },
     validationSchema,
-    onSubmit: (values,{ resetForm }) => {
+    onSubmit: (values, { resetForm }) => {
       const updatedData = {
         emergencyType: values.emergencyType,
         date: values.date,
@@ -82,17 +85,22 @@ export default function UpdateForm() {
           preparedBy: values.preparedBy,
         },
       };
-
-      axios
-        .put(`http://localhost:3000/update/${id}`, { reports: updatedData })
-        .then((result) => {
-          console.log(result);
-          resetForm()
-          navigate("/");
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      startLoading();
+      setTimeout(() => {
+        axios
+          .put(`http://localhost:3000/update/${id}`, { reports: updatedData })
+          .then((result) => {
+            console.log(result);
+            resetForm();
+          })
+          .catch((err) => {
+            console.log(err);
+          })
+          .finally(() => {
+            stopLoading();
+            navigate("/");
+          });
+      }, 1000);
     },
   });
   return (
@@ -457,7 +465,7 @@ export default function UpdateForm() {
             color="green"
             className="mt-2"
           >
-            Update
+            {loading ? <LoadingState /> : "Update"}
           </Button>
         </div>
       </form>

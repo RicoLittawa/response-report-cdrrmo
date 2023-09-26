@@ -4,8 +4,10 @@ import EditIcon from "@mui/icons-material/Edit";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { Button, Card, Typography } from "@material-tailwind/react";
-import DialogMessage from "./Dialog";
+import DialogMessage from "../Components/Dialog";
 import { Link } from "react-router-dom";
+import Swal from "sweetalert2";
+
 export default function Table() {
   const [data, setData] = useState([]);
   const [size, setSize] = useState(null);
@@ -52,12 +54,37 @@ export default function Table() {
   useEffect(() => {
     fetchData();
 
-    const pollingInterval = setInterval(fetchData, 10000);
+    // const pollingInterval = setInterval(fetchData, 10000);
 
-    return () => {
-      clearInterval(pollingInterval); // Clean up the polling interval when the component unmounts
-    };
+    // return () => {
+    //   clearInterval(pollingInterval); // Clean up the polling interval when the component unmounts
+    // };
   }, []);
+
+  //Delete
+  const handleDelete = (id) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axios
+          .delete(`http://localhost:3000/deleteReports/${id}`)
+          .then((result) => {
+            Swal.fire("Deleted!", "Your file has been deleted.", "success");
+            console.log(result);
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      }
+    });
+  };
   return (
     <div className="rounded  bg-white mx-3 py-5 px-3">
       <DialogMessage
@@ -160,7 +187,10 @@ export default function Table() {
                     >
                       <EditIcon />
                     </Link>
-                    <Button className="bg-red-300 drop-shadow-xl hover:bg-red-500 text-white text-sm font-bold px-3 py-1 rounded my-2 mx-2">
+                    <Button
+                      onClick={() => handleDelete(item._id)}
+                      className="bg-red-300 drop-shadow-xl hover:bg-red-500 text-white text-sm font-bold px-3 py-1 rounded my-2 mx-2"
+                    >
                       <DeleteIcon />
                     </Button>
                   </div>

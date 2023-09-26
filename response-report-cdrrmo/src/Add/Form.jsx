@@ -11,16 +11,14 @@ import {
   Option,
   Textarea,
 } from "@material-tailwind/react";
-import { validationSchema, genderArray } from "./Components/constants";
-import LoadingState from "./Components/LoadingState";
-import AlertMessage from "./Components/AlertMessage";
-import { useState } from "react";
-import useLoading from "./Components/scripts/useLoading";
+import { validationSchema, genderArray } from "../Components/constants";
+import LoadingState from "../Components/LoadingState";
+import useLoading from "../Components/scripts/useLoading";
+import Swal from "sweetalert2";
 
 export default function Form() {
   const currDate = new Date();
   const formattedDate = currDate.toISOString().split("T")[0];
-  const [message, setMessage] = useState(false);
   const { loading, startLoading, stopLoading } = useLoading();
   const formik = useFormik({
     initialValues: {
@@ -44,7 +42,6 @@ export default function Form() {
     },
     validationSchema,
     onSubmit: (values, { resetForm }) => {
-      console.log("work");
       const reportData = {
         emergencyType: values.emergencyType,
         date: values.date,
@@ -73,13 +70,17 @@ export default function Form() {
         axios
           .post("http://localhost:3000/", { reports: reportData })
           .then((result) => {
-            console.log(result);
             resetForm();
           })
           .catch((err) => console.log(err))
           .finally(() => {
             stopLoading();
-            setMessage(true);
+            Swal.fire({
+              title: "Success",
+              text: "Do you want to continue",
+              icon: "success",
+              confirmButtonText: "Ok",
+            });
           });
       }, 1000);
     },
@@ -330,7 +331,7 @@ export default function Form() {
             </Typography>
           ) : null}
           <Input
-            type="number"
+            type="text"
             name="actionTaken"
             label="Action Taken"
             onChange={formik.handleChange}
@@ -435,20 +436,17 @@ export default function Form() {
           />
         </div>
         <div className="flex justify-end">
-          {!message && (
-            <Button
-              type="submit"
-              variant="gradient"
-              size="md"
-              color="green"
-              className="mt-2"
-            >
-              {loading ? <LoadingState /> : "Save"}
-            </Button>
-          )}
+          <Button
+            type="submit"
+            variant="gradient"
+            size="md"
+            color="green"
+            className="mt-2"
+          >
+            {loading ? <LoadingState /> : "Save"}
+          </Button>
         </div>
       </form>
-      <AlertMessage message={message} setMessage={setMessage} />
     </div>
   );
 }

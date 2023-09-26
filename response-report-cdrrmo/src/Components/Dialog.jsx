@@ -8,7 +8,7 @@ import {
   Typography,
 } from "@material-tailwind/react";
 import { useRef } from "react";
-import logo1 from "./assets/logo1.png";
+import logo1 from "../assets/logo1.png";
 import ReactToPrint from "react-to-print";
 
 export default function DialogMessage({ open, size, handleOpen, report }) {
@@ -43,13 +43,7 @@ export default function DialogMessage({ open, size, handleOpen, report }) {
 
   return (
     <>
-      <Dialog
-        open={
-       open
-        }
-        size={size || "md"}
-        handler={handleOpen}
-      >
+      <Dialog open={open} size={size || "md"} handler={handleOpen}>
         <DialogHeader>Print Report</DialogHeader>
         <DialogBody divider className="h-[40rem] overflow-scroll">
           <div ref={componentRef}>

@@ -1,7 +1,7 @@
-import Form from "./Form";
-import Table from "./TableReport";
-import Header from "./Header";
+import Form from "./Add/Form";
+import Table from "./Add/TableReport";
 import { useState } from "react";
+import Header from "./Components/Header";
 
 export default function Home() {
   const [loading, setLoading] = useState(false);

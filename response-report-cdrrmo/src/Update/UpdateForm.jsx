@@ -19,8 +19,8 @@ import axios from "axios";
 import { useFormik } from "formik";
 import { genderArray, validationSchema } from "../Components/constants";
 import LoadingState from "../Components/LoadingState";
-import AlertMessage from "../Components/AlertMessage";
 import useLoading from "../Components/scripts/useLoading";
+import Swal from "sweetalert2";
 export default function UpdateForm() {
   const { id } = useParams();
   const [data, setData] = useState({});
@@ -86,23 +86,41 @@ export default function UpdateForm() {
         },
       };
       startLoading();
-      setTimeout(() => {
-        axios
-          .put(`http://localhost:3000/update/${id}`, { reports: updatedData })
-          .then((result) => {
-            console.log(result);
-            resetForm();
-          })
-          .catch((err) => {
-            console.log(err);
-          })
-          .finally(() => {
-            stopLoading();
-            navigate("/");
-          });
-      }, 1000);
+      Swal.fire({
+        title: "Do you want to save the changes?",
+        showDenyButton: true,
+        showCancelButton: true,
+        confirmButtonText: "Save",
+        denyButtonText: `Don't save`,
+      }).then((result) => {
+        if (result.isConfirmed) {
+          axios
+            .put(`http://localhost:3000/update/${id}`, { reports: updatedData })
+            .then((result) => {
+              Swal.fire({
+                icon: "success",
+                title: "Changes has been saved",
+                showConfirmButton: false,
+                timer: 1000,
+              });
+              resetForm();
+            })
+            .catch((err) => {
+              console.log(err);
+            })
+            .finally(() => {
+              stopLoading();
+              setTimeout(() => {
+                navigate("/");
+              }, 1000);
+            });
+        } else if (result.isDenied) {
+          Swal.fire("Changes are not saved", "", "info");
+        }
+      });
     },
   });
+
   return (
     <div className="w-full">
       <Link to="/" className="flex  px-8 pb-8 mt-3">
@@ -112,7 +130,7 @@ export default function UpdateForm() {
         </Typography>
       </Link>
 
-      <form className="bg-white px-8 pb-8 mb-4" onSubmit={formik.handleSubmit}>
+      <form className="bg-white px-8 mb-4" onSubmit={formik.handleSubmit}>
         <Typography variant="h4" className="text-gray-700 py-3">
           Report Information
         </Typography>

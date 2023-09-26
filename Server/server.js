@@ -67,6 +67,22 @@ app.put("/update/:id", (req, res) => {
       res.status(500).json({ message: "Server error" });
     });
 });
+
+//Delete Reports
+app.delete("/deleteReports/:id", (req, res) => {
+  const { id } = req.params;
+  Report.findByIdAndDelete(id)
+    .then((deletedReport) => {
+      if (deletedReport) {
+        return res.status(404).json({ message: "Report not updated" });
+      }
+      res.json(deletedReport);
+    })
+    .catch((error) => {
+      console.error("Error fetching report:", error);
+      res.status(500).json({ message: "Server error" });
+    });
+});
 app.listen(3000, () => {
   console.log("Server is running");
 });

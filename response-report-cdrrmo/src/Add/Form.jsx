@@ -77,7 +77,7 @@ export default function Form() {
             stopLoading();
             Swal.fire({
               title: "Success",
-              text: "Do you want to continue",
+              text: "Report has been added",
               icon: "success",
               confirmButtonText: "Ok",
             });

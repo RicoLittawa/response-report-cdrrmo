@@ -99,7 +99,8 @@ export default function UpdateForm() {
             .then((result) => {
               Swal.fire({
                 icon: "success",
-                title: "Changes has been saved",
+                title: "Update",
+                text:"Changes has been saved",
                 showConfirmButton: false,
                 timer: 1000,
               });
@@ -115,6 +116,7 @@ export default function UpdateForm() {
               }, 1000);
             });
         } else if (result.isDenied) {
+          stopLoading();
           Swal.fire("Changes are not saved", "", "info");
         }
       });

@@ -54,11 +54,11 @@ export default function Table() {
   useEffect(() => {
     fetchData();
 
-    // const pollingInterval = setInterval(fetchData, 10000);
+    const pollingInterval = setInterval(fetchData, 10000);
 
-    // return () => {
-    //   clearInterval(pollingInterval); // Clean up the polling interval when the component unmounts
-    // };
+    return () => {
+      clearInterval(pollingInterval);
+    };
   }, []);
 
   //Delete
@@ -73,18 +73,31 @@ export default function Table() {
       confirmButtonText: "Yes, delete it!",
     }).then((result) => {
       if (result.isConfirmed) {
+        // Send a DELETE request to the server
         axios
           .delete(`http://localhost:3000/deleteReports/${id}`)
-          .then((result) => {
-            Swal.fire("Deleted!", "Your file has been deleted.", "success");
-            console.log(result);
+          .then((response) => {
+            // Check if the server successfully deleted the item
+            if (response.status === 200) {
+              // Update the local state to remove the deleted item
+              setData((data) => data.filter((u) => u._id !== id));
+
+              // Show a success message
+              Swal.fire("Deleted!", "Your file has been deleted.", "success");
+            } else {
+              // Handle errors or show an error message
+              Swal.fire("Error", "Failed to delete the item.", "error");
+            }
           })
           .catch((error) => {
-            console.log(error);
+            // Handle errors or show an error message
+            console.error("Error deleting item:", error);
+            Swal.fire("Error", "Failed to delete the item.", "error");
           });
       }
     });
   };
+
   return (
     <div className="rounded  bg-white mx-3 py-5 px-3">
       <DialogMessage

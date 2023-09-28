@@ -73,16 +73,19 @@ app.delete("/deleteReports/:id", (req, res) => {
   const { id } = req.params;
   Report.findByIdAndDelete(id)
     .then((deletedReport) => {
-      if (deletedReport) {
-        return res.status(404).json({ message: "Report not updated" });
+      if (!deletedReport) {
+        // If the report was not found, respond with a 404 status code
+        return res.status(404).json({ message: "Report not found" });
       }
-      res.json(deletedReport);
+      // Report was found and deleted successfully, respond with a 200 status code
+      res.status(200).json({ message: "Report deleted successfully" });
     })
     .catch((error) => {
-      console.error("Error fetching report:", error);
+      console.error("Error deleting report:", error);
       res.status(500).json({ message: "Server error" });
     });
 });
+
 app.listen(3000, () => {
   console.log("Server is running");
 });

@@ -3,17 +3,34 @@ import PrintIcon from "@mui/icons-material/Print";
 import EditIcon from "@mui/icons-material/Edit";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { Button, Card, Typography } from "@material-tailwind/react";
+import { Button, Card, Typography, CardFooter } from "@material-tailwind/react";
 import DialogMessage from "../Components/Dialog";
 import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 
+const ITEMS_PER_PAGE = 5;
 export default function Table() {
   const [data, setData] = useState([]);
   const [size, setSize] = useState(null);
   // const [id,setId]= useState(null);
   const [report, setReport] = useState({});
   const [open, setOpen] = useState(false);
+
+  const [currentPage, setCurrentPage] = useState(1);
+
+  // Calculate the total number of pages
+  const totalPages = Math.ceil(data.length / ITEMS_PER_PAGE);
+
+  // Calculate the starting and ending indices for the current page
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+  const endIndex = startIndex + ITEMS_PER_PAGE;
+
+  // Slice the data to display only the items for the current page
+  const currentPageData = data.slice(startIndex, endIndex);
+
+  const handlePageChange = (newPage) => {
+    setCurrentPage(newPage);
+  };
 
   const handleOpen = (value, id) => {
     setOpen(!open);
@@ -130,7 +147,7 @@ export default function Table() {
             </tr>
           </thead>
           <tbody>
-            {data.map((item) => (
+            {currentPageData.map((item) => (
               <tr key={item._id}>
                 <td className="border border-slate-300 p-4">
                   <Typography
@@ -212,6 +229,29 @@ export default function Table() {
             ))}
           </tbody>
         </table>
+        <CardFooter className="flex items-center justify-between border-t border-blue-gray-50 p-4">
+          <Typography variant="small" color="blue-gray" className="font-normal">
+            Page {currentPage} of {totalPages}
+          </Typography>
+          <div className="flex gap-2">
+            <Button
+              variant="outlined"
+              size="sm"
+              onClick={() => handlePageChange(currentPage - 1)}
+              disabled={currentPage === 1}
+            >
+              Previous
+            </Button>
+            <Button
+              variant="outlined"
+              size="sm"
+              onClick={() => handlePageChange(currentPage + 1)}
+              disabled={currentPage === totalPages}
+            >
+              Next
+            </Button>
+          </div>
+        </CardFooter>
       </Card>
     </div>
   );

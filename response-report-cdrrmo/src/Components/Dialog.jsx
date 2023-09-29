@@ -141,8 +141,9 @@ export default function DialogMessage({ open, size, handleOpen, report }) {
                 </table>
               </Card>
             </section>
-            <section className="pt-10 mx-32">
-              <div className="ml-12 text-sm font-bold text-black">
+            <section className="pt-32 mx-32">
+              <div className=".
+              ">
                 <p>Members Responded:</p>
                 <div className="ml-4">
                   <p>

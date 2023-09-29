@@ -3,16 +3,11 @@
 }
 
 .logo-image {
-  position: absolute;
-  left: 15rem;
-  z-index: 1;
+  display: none;
 }
 
 .straight-line {
-  width: 58%; /* Set the width of the line */
-  border-bottom: 1px solid red; /* Set the line color and style */
-  position: absolute;
-  left: 20rem;
+  display: none;
 }
 
 @media print {
@@ -21,13 +16,17 @@
     height: fit-content;
   }
   .logo-image {
+    display: block;
     position: absolute;
     left: 4rem;
     z-index: 1;
   }
   .straight-line {
+    display: block;
+    border-bottom: 1px solid red; /* Set the line color and style */
+    position: absolute;
+
     width: 70%; /* Set the width of the line */
     left: 10rem;
   }
-  
 }

@@ -15,11 +15,140 @@ import { validationSchema, genderArray } from "../Components/constants";
 import LoadingState from "../Components/LoadingState";
 import useLoading from "../Components/scripts/useLoading";
 import Swal from "sweetalert2";
+import { useState } from "react";
 
 export default function Form() {
   const currDate = new Date();
   const formattedDate = currDate.toISOString().split("T")[0];
   const { loading, startLoading, stopLoading } = useLoading();
+  const [reference,setReference]=useState(0)
+  const [patientInputs, setPatientInputs] = useState([]);
+  const handleAddPatient = () => {
+    const newInput = (
+      <div className="py-3">
+        <hr  className="py-2"/>
+        <div className="grid grid-cols-2  gap-3">
+          {formik.touched.nameOfPatient && formik.errors.nameOfPatient ? (
+            <Typography variant="small" className="text-red-500">
+              <FontAwesomeIcon className="pr-1" icon={faCircleExclamation} />
+              {formik.errors.nameOfPatient}
+            </Typography>
+          ) : null}
+          <Input
+            type="text"
+            name="nameOfPatient"
+            label="Name of Patient"
+            onChange={formik.handleChange}
+            value={formik.values.nameOfPatient}
+            onBlur={formik.handleBlur}
+            error={
+              formik.touched.nameOfPatient && formik.errors.nameOfPatient
+                ? true
+                : false
+            }
+          />
+          {formik.touched.age && formik.errors.age ? (
+            <Typography variant="small" className="text-red-500">
+              <FontAwesomeIcon className="pr-1" icon={faCircleExclamation} />
+              {formik.errors.age}
+            </Typography>
+          ) : null}
+          <Input
+            type="number"
+            name="age"
+            label="Age"
+            onChange={formik.handleChange}
+            value={formik.values.age}
+            onBlur={formik.handleBlur}
+            error={formik.touched.age && formik.errors.age ? true : false}
+          />
+          {formik.touched.gender && formik.errors.gender ? (
+            <Typography variant="small" className="text-red-500">
+              <FontAwesomeIcon className="pr-1" icon={faCircleExclamation} />
+              {formik.errors.gender}
+            </Typography>
+          ) : null}
+          <Select
+            label="Select Gender"
+            name="gender"
+            onChange={(e) => {
+              // Manually set the value in Formik's state
+              formik.setFieldValue("gender", e);
+              // Call Formik's onChange to trigger validation
+              formik.handleChange(e);
+            }}
+            onBlur={formik.handleBlur}
+            value={formik.values.gender}
+            error={formik.touched.gender && formik.errors.gender ? true : false}
+          >
+            {genderArray.map((gen) => (
+              <Option key={gen} value={gen}>
+                {gen}
+              </Option>
+            ))}
+          </Select>
+          {formik.touched.condition && formik.errors.condition ? (
+            <Typography variant="small" className="text-red-500">
+              <FontAwesomeIcon className="pr-1" icon={faCircleExclamation} />
+              {formik.errors.condition}
+            </Typography>
+          ) : null}
+          <Input
+            type="text"
+            name="condition"
+            label="Injury/Condition"
+            onChange={formik.handleChange}
+            value={formik.values.condition}
+            onBlur={formik.handleBlur}
+            error={
+              formik.touched.condition && formik.errors.condition ? true : false
+            }
+          />
+          {formik.touched.actionTaken && formik.errors.actionTaken ? (
+            <Typography variant="small" className="text-red-500">
+              <FontAwesomeIcon className="pr-1" icon={faCircleExclamation} />
+              {formik.errors.actionTaken}
+            </Typography>
+          ) : null}
+          <Input
+            type="text"
+            name="actionTaken"
+            label="Action Taken"
+            onChange={formik.handleChange}
+            value={formik.values.actionTaken}
+            onBlur={formik.handleBlur}
+            error={
+              formik.touched.actionTaken && formik.errors.actionTaken
+                ? true
+                : false
+            }
+          />
+          {formik.touched.responders && formik.errors.responders ? (
+            <Typography variant="small" className="text-red-500">
+              <FontAwesomeIcon className="pr-1" icon={faCircleExclamation} />
+              {formik.errors.responders}
+            </Typography>
+          ) : null}
+          <Input
+            type="number"
+            name="responders"
+            label="Responders"
+            onChange={formik.handleChange}
+            value={formik.values.responders}
+            onBlur={formik.handleBlur}
+            error={
+              formik.touched.responders && formik.errors.responders
+                ? true
+                : false
+            }
+          />
+        </div>
+      </div>
+    );
+
+    setPatientInputs([...patientInputs, newInput]); // Add the new input to the array
+  };
+
   const formik = useFormik({
     initialValues: {
       emergencyType: "",
@@ -244,10 +373,20 @@ export default function Form() {
             }
           />
         </div>
-        <Typography variant="h4" className="text-gray-700 py-3">
-          Patient Information
-        </Typography>
-        <div className="grid grid-cols-1  gap-3">
+        <div className="flex justify-between my-5">
+          <Typography variant="h4" className="text-gray-700 py-3">
+            Patient Information
+          </Typography>
+          <Button
+            variant="gradient"
+            size="md"
+            color="green"
+            onClick={handleAddPatient}
+          >
+            Add Patient
+          </Button>
+        </div>
+        <div className="grid grid-cols-2  gap-3">
           {formik.touched.nameOfPatient && formik.errors.nameOfPatient ? (
             <Typography variant="small" className="text-red-500">
               <FontAwesomeIcon className="pr-1" icon={faCircleExclamation} />
@@ -363,6 +502,11 @@ export default function Form() {
             }
           />
         </div>
+        {patientInputs.map((input, index) => (
+          <div key={index}>
+            {input}
+          </div>
+        ))}
         <Typography variant="h4" className="text-gray-700 py-3">
           Members Responded
         </Typography>

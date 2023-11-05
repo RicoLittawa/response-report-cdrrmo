@@ -42,10 +42,10 @@ export default function DialogMessage({ open, size, handleOpen, report }) {
   const time = formatTime(report.time);
 
   return (
-    <>
+    <section>
       <Dialog open={open} size={size || "md"} handler={handleOpen}>
         <DialogHeader>Print Report</DialogHeader>
-        <DialogBody divider className="h-[40rem] overflow-scroll">
+        <DialogBody divider className="h-96 overflow-scroll">
           <div ref={componentRef}>
             <header className="pt-10">
               <div className="image-position">
@@ -202,6 +202,6 @@ export default function DialogMessage({ open, size, handleOpen, report }) {
           />
         </DialogFooter>
       </Dialog>
-    </>
+    </section>
   );
 }

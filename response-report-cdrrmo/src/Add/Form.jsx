@@ -4,8 +4,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleExclamation } from "@fortawesome/free-solid-svg-icons";
 import { Button, Typography } from "@material-tailwind/react";
 import { validationSchema } from "../Components/constants";
-import LoadingState from "../Components/LoadingState";
-import useLoading from "../Components/scripts/useLoading";
 import Swal from "sweetalert2";
 import { useState } from "react";
 import {
@@ -14,8 +12,6 @@ import {
   MaterialTailwindSelect,
 } from "../Components/MaterialTailwindInput";
 export default function FormFields() {
-  const { loading, startLoading, stopLoading } = useLoading();
-
   return (
     <div className="w-full">
       <Formik
@@ -48,12 +44,13 @@ export default function FormFields() {
             preparedBy: "",
           },
         }}
-        validationSchema={validationSchema}
-        onSubmit={(values) => {
+        // validationSchema={validationSchema}
+        onSubmit={async (values) => {
           console.log(values);
+          return new Promise((res) => setTimeout(res, 2500));
         }}
       >
-        {({ values, errors, touched }) => (
+        {({ values, errors, touched, isSubmitting }) => (
           <Form className="px-8 pt-6 pb-8 mb-4">
             <Typography variant="h4" className="text-gray-700 py-3">
               Report Information
@@ -370,7 +367,9 @@ export default function FormFields() {
               />
             </div>
             <div className="flex justify-end my-3">
-              <Button type="submit">Submit</Button>
+              <Button type="submit" color="green" disabled={isSubmitting}>
+                {isSubmitting ? "Submitting" : "Submit"}
+              </Button>
             </div>
 
             <pre>{JSON.stringify({ values, errors }, null, 2)}</pre>

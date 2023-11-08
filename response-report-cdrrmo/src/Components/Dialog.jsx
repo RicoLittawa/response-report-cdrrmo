@@ -28,19 +28,19 @@ export default function DialogMessage({ open, size, handleOpen, report }) {
     }
     return `${hours}:${minutes} ${amOrPm}`;
   };
-  const nameOfPatient = report?.patientInformation?.nameOfPatient ?? "Unknown";
-  const age = report?.patientInformation?.age ?? "Unknown";
-  const gender = report?.patientInformation?.gender ?? "Unknown";
-  const condition = report?.patientInformation?.condition ?? "Unknown";
-  const actionTaken = report?.patientInformation?.actionTaken ?? "Unknown";
-  const responders = report?.patientInformation?.responders ?? "Unknown";
-  const driver = report?.membersResponded?.driver ?? "Unknown";
-  const members = report?.membersResponded?.members ?? "Unknown";
-  const dispatch = report?.membersResponded?.dispatch ?? "Unknown";
-  const prepared = report?.membersResponded?.preparedBy ?? "Unknown";
+  // const nameOfPatient = report?.patientInformation?.nameOfPatient ?? "Unknown";
+  // const age = report?.patientInformation?.age ?? "Unknown";
+  // const gender = report?.patientInformation?.gender ?? "Unknown";
+  // const condition = report?.patientInformation?.condition ?? "Unknown";
+  // const actionTaken = report?.patientInformation?.actionTaken ?? "Unknown";
+  // const responders = report?.patientInformation?.responders ?? "Unknown";
+  // const driver = report?.membersResponded?.driver ?? "Unknown";
+  // const members = report?.membersResponded?.members ?? "Unknown";
+  // const dispatch = report?.membersResponded?.dispatch ?? "Unknown";
+  // const prepared = report?.membersResponded?.preparedBy ?? "Unknown";
   const componentRef = useRef();
   const time = formatTime(report.time);
-
+console.log(report)
   return (
     <section>
       <Dialog open={open} size={size || "md"} handler={handleOpen}>
@@ -119,22 +119,22 @@ export default function DialogMessage({ open, size, handleOpen, report }) {
                   <tbody>
                     <tr>
                       <td className="border border-slate-300 px-3">
-                        <span className="font-normal">{nameOfPatient}</span>
+                        <span className="font-normal"></span>
                       </td>
                       <td className="border border-slate-300 px-3">
-                        <span className="font-normal">{age}</span>
+                        <span className="font-normal"></span>
                       </td>
                       <td className="border border-slate-300 px-3">
-                        <span className="font-normal">{gender}</span>
+                        <span className="font-normal"></span>
                       </td>
                       <td className="border border-slate-300 px-3">
-                        <span className="font-normal">{condition}</span>
+                        <span className="font-normal"></span>
                       </td>
                       <td className="border border-slate-300 px-3">
-                        <span className="font-normal">{actionTaken}</span>
+                        <span className="font-normal"></span>
                       </td>
                       <td className="border border-slate-300 px-3">
-                        <span className="font-normal">{responders}</span>
+                        <span className="font-normal"></span>
                       </td>
                     </tr>
                   </tbody>
@@ -142,28 +142,30 @@ export default function DialogMessage({ open, size, handleOpen, report }) {
               </Card>
             </section>
             <section className="pt-32 mx-32">
-              <div className=".
-              ">
+              <div
+                className=".
+              "
+              >
                 <p>Members Responded:</p>
                 <div className="ml-4">
                   <p>
                     Driver:
-                    <span className="font-normal"> {driver}</span>
+                    <span className="font-normal"></span>
                   </p>
                   <p>
                     Member/s:
-                    <span className="font-normal"> {members}</span>
+                    <span className="font-normal"></span>
                   </p>
                   <p>
                     Dispatch:
-                    <span className="font-normal"> {dispatch}</span>
+                    <span className="font-normal"></span>
                   </p>
                 </div>
               </div>
               <div className="ml-12 py-5 text-sm">
                 <p className="text-black py-3 font-bold">Prepared by:</p>
                 <p className="font-bold text-black ">
-                  <span className="font-normal">{prepared}</span>
+                  <span className="font-normal"></span>
                 </p>
               </div>
               <div className="ml-12 text-sm">

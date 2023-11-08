@@ -44,14 +44,13 @@ export default function FormFields() {
             preparedBy: "",
           },
         }}
-        // validationSchema={validationSchema}
+        validationSchema={validationSchema}
         onSubmit={async (values) => {
-          console.log("values",values)
+          console.log("values", values);
           try {
-            const response = await axios.post(
-              "http://localhost:3000/",
-              {reports:values}
-            );
+            const response = await axios.post("http://localhost:3000/", {
+              reports: values,
+            });
             console.log("Request successful:", response.data);
           } catch (error) {
             console.error("Error:", error);
@@ -65,12 +64,14 @@ export default function FormFields() {
             </Typography>
             <div className="grid grid-cols-2">
               <div>
+                {errors.emergencyType && touched.emergencyType ? (
+                  <Typography color="red">Please select an option.</Typography>
+                ) : null}
                 <Field
                   type="radio "
                   name="emergencyType"
                   label="Medical"
                   color="green"
-                  checked
                   component={MaterialTailwindRadio}
                   value="medical"
                 />

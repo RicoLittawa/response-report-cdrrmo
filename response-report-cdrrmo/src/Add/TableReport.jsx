@@ -57,8 +57,8 @@ export default function Table() {
   ];
 
   // Function to fetch data from the server
-  const fetchData = () => {
-    axios
+  const fetchData = async () => {
+    await axios
       .get("http://localhost:3000/")
       .then((response) => {
         setData(response.data);
@@ -155,7 +155,7 @@ export default function Table() {
                     color="blue-gray"
                     className="font-normal"
                   >
-                    {item.patientInformation.nameOfPatient}
+                    {item.emergencyType}
                   </Typography>
                 </td>
                 <td className="border border-slate-300 p-4">
@@ -164,7 +164,7 @@ export default function Table() {
                     color="blue-gray"
                     className="font-normal"
                   >
-                    {item.patientInformation.age}
+                    {item.typeOfIncident}
                   </Typography>
                 </td>
                 <td className="border border-slate-300 p-4">
@@ -173,7 +173,7 @@ export default function Table() {
                     color="blue-gray"
                     className="font-normal"
                   >
-                    {item.patientInformation.gender}
+                    {item.location}
                   </Typography>
                 </td>
                 <td className="border border-slate-300 p-4">
@@ -182,7 +182,7 @@ export default function Table() {
                     color="blue-gray"
                     className="font-normal"
                   >
-                    {item.patientInformation.condition}
+                    {item.nameOfCaller}
                   </Typography>
                 </td>
                 <td className="border border-slate-300 p-4">
@@ -191,7 +191,7 @@ export default function Table() {
                     color="blue-gray"
                     className="font-normal"
                   >
-                    {item.patientInformation.actionTaken}
+                    {item.personInvolved}
                   </Typography>
                 </td>
                 <td className="border border-slate-300 p-4">
@@ -200,7 +200,7 @@ export default function Table() {
                     color="blue-gray"
                     className="font-normal"
                   >
-                    {item.patientInformation.responders}
+                    {item.date}
                   </Typography>
                 </td>
                 <td className="border border-slate-300">

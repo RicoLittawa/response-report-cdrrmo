@@ -7,21 +7,28 @@ const reportsSchema = new mongoose.Schema({
   location: String,
   nameOfCaller: String,
   personInvolved: String,
-  patientInformation: {
-    nameOfPatient: String,
-    age: String,
-    gender: String,
-    condition: String,
-    actionTaken: String,
-    responders: String,
-  },
+  patientInformation: [
+    {
+      nameOfPatient: String,
+      age: String,
+      gender: String,
+      condition: String,
+      actionTaken: String,
+      responders: String,
+    },
+  ],
   membersResponded: {
     driver: String,
+    members: [
+      {
+        nameOfMembers: String,
+      },
+    ],
     dispatch: String,
-    members: String,
-    preparedBy:String
+
+    preparedBy: String,
   },
 });
 
-const Report = mongoose.model("reports",reportsSchema)
-module.exports= Report
+const Report = mongoose.model("reports", reportsSchema);
+module.exports = Report;

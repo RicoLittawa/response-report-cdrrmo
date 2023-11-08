@@ -46,8 +46,16 @@ export default function FormFields() {
         }}
         // validationSchema={validationSchema}
         onSubmit={async (values) => {
-          console.log(values);
-          return new Promise((res) => setTimeout(res, 2500));
+          console.log("values",values)
+          try {
+            const response = await axios.post(
+              "http://localhost:3000/",
+              {reports:values}
+            );
+            console.log("Request successful:", response.data);
+          } catch (error) {
+            console.error("Error:", error);
+          }
         }}
       >
         {({ values, errors, touched, isSubmitting }) => (

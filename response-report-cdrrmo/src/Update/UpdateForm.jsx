@@ -17,7 +17,7 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useFormik } from "formik";
-import { genderArray, validationSchema } from "../Components/constants";
+import { validationSchema } from "../Components/constants";
 import LoadingState from "../Components/LoadingState";
 import useLoading from "../Components/scripts/useLoading";
 import Swal from "sweetalert2";
@@ -100,7 +100,7 @@ export default function UpdateForm() {
               Swal.fire({
                 icon: "success",
                 title: "Update",
-                text:"Changes has been saved",
+                text: "Changes has been saved",
                 showConfirmButton: false,
                 timer: 1000,
               });

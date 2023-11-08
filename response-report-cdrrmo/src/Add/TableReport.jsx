@@ -15,6 +15,7 @@ export default function Table() {
   // const [id,setId]= useState(null);
   const [report, setReport] = useState({});
   const [open, setOpen] = useState(false);
+  const [id, setId]= useState()
 
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -32,19 +33,10 @@ export default function Table() {
     setCurrentPage(newPage);
   };
 
-  const handleOpen = (value, id) => {
+  const handleOpen = (value,id) => {
     setOpen(!open);
     setSize(value);
-    if (id) {
-      axios
-        .get(`http://localhost:3000/update/${id}`)
-        .then((response) => {
-          setReport(response.data);
-        })
-        .catch((error) => {
-          console.error("Error fetching data:", error);
-        });
-    }
+    setId(id)
   };
   const TABLE_HEAD = [
     "Name",
@@ -121,7 +113,7 @@ export default function Table() {
         size={size}
         open={open}
         handleOpen={handleOpen}
-        report={report}
+        id={id}
       />
       <h1 className="text-gray-700 text-xl font-bold mb-3 font-serif py-3">
         Reports

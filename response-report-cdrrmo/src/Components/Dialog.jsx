@@ -7,11 +7,13 @@ import {
   Card,
   Typography,
 } from "@material-tailwind/react";
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import logo1 from "../assets/logo1.png";
 import ReactToPrint from "react-to-print";
+import axios from "axios";
 
-export default function DialogMessage({ open, size, handleOpen, report }) {
+export default function DialogMessage({ open, size, handleOpen, id }) {
+  const [report, setReport] = useState({});
   const formatTime = (data) => {
     // Create a new Date object to parse the time string
     const jsDate = new Date(`01/01/2000 ${data}`);
@@ -28,19 +30,22 @@ export default function DialogMessage({ open, size, handleOpen, report }) {
     }
     return `${hours}:${minutes} ${amOrPm}`;
   };
-  // const nameOfPatient = report?.patientInformation?.nameOfPatient ?? "Unknown";
-  // const age = report?.patientInformation?.age ?? "Unknown";
-  // const gender = report?.patientInformation?.gender ?? "Unknown";
-  // const condition = report?.patientInformation?.condition ?? "Unknown";
-  // const actionTaken = report?.patientInformation?.actionTaken ?? "Unknown";
-  // const responders = report?.patientInformation?.responders ?? "Unknown";
-  // const driver = report?.membersResponded?.driver ?? "Unknown";
-  // const members = report?.membersResponded?.members ?? "Unknown";
-  // const dispatch = report?.membersResponded?.dispatch ?? "Unknown";
-  // const prepared = report?.membersResponded?.preparedBy ?? "Unknown";
+  const time = formatTime();
   const componentRef = useRef();
-  const time = formatTime(report.time);
-console.log(report)
+  console.log(id);
+  const getData = () => {
+    axios
+      .get(`http://localhost:3000/update/${id}`)
+      .then((response) => {
+        setReport(response.data);
+        console.log(report);
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
+  };
+
+
   return (
     <section>
       <Dialog open={open} size={size || "md"} handler={handleOpen}>
@@ -72,34 +77,33 @@ console.log(report)
               <div className="flex justify-between pt-3 font-bold text-sm text-black">
                 <p>
                   Type of Emergency:
-                  <span className="font-normal"> {report.emergencyType}</span>
+                  <span className="font-normal"></span>
                 </p>
                 <div>
                   <p>
-                    Date: <span className="font-normal"> {report.date}</span>
+                    Date: <span className="font-normal"></span>
                   </p>
                   <p>
                     Time of Call:
-                    <span className="font-normal"> {time}</span>
+                    <span className="font-normal"></span>
                   </p>
                 </div>
               </div>
               <div className="text-sm text-black font-bold mb-5">
                 <p>
                   Type of Incident:
-                  <span className="font-normal"> {report.typeOfIncident}</span>
+                  <span className="font-normal"></span>
                 </p>
                 <p>
-                  Location:{" "}
-                  <span className="font-normal"> {report.location} </span>
+                  Location: <span className="font-normal"></span>
                 </p>
                 <p>
                   Name of Caller:
-                  <span className="font-normal"> {report.nameOfCaller}</span>
+                  <span className="font-normal"></span>
                 </p>
                 <p>
                   No. of person involved:
-                  <span className="font-normal"> {report.personInvolved}</span>
+                  <span className="font-normal"></span>
                 </p>
               </div>
               <Card>

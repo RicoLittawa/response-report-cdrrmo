@@ -3,47 +3,20 @@ import { Formik, FieldArray, Field, Form } from "formik";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleExclamation } from "@fortawesome/free-solid-svg-icons";
 import { Button, Typography } from "@material-tailwind/react";
-import { validationSchema } from "../Components/constants";
 import Swal from "sweetalert2";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import {
   MaterialTailwindInput,
   MaterialTailwindRadio,
   MaterialTailwindSelect,
 } from "../Components/MaterialTailwindInput";
+import TableContext from "../context/TableContext";
 export default function FormFields() {
+  const {initialVal,validationSchema}=useContext(TableContext)
   return (
     <div className="w-full">
       <Formik
-        initialValues={{
-          emergencyType: "",
-          date: "",
-          time: "",
-          typeOfIncident: "",
-          location: "",
-          nameOfCaller: "",
-          personInvolved: "",
-          patientInformation: [
-            {
-              nameOfPatient: "",
-              age: "",
-              gender: "",
-              condition: "",
-              actionTaken: "",
-              responders: "",
-            },
-          ],
-          membersResponded: {
-            driver: "",
-            members: [
-              {
-                nameOfMembers: "",
-              },
-            ],
-            dispatch: "",
-            preparedBy: "",
-          },
-        }}
+        initialValues={initialVal}
         validationSchema={validationSchema}
         onSubmit={async (values) => {
           console.log("values", values);

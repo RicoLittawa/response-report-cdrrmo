@@ -1,12 +1,13 @@
 import DeleteIcon from "@mui/icons-material/Delete";
 import PrintIcon from "@mui/icons-material/Print";
 import EditIcon from "@mui/icons-material/Edit";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { Button, Card, Typography, CardFooter } from "@material-tailwind/react";
 import DialogMessage from "../Components/Dialog";
 import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
+import TableContext from "../context/TableContext";
 
 const ITEMS_PER_PAGE = 5;
 export default function Table() {
@@ -39,7 +40,6 @@ export default function Table() {
       }
     }
   };
-
   const TABLE_HEAD = [
     "Name",
     "Age",
@@ -100,14 +100,15 @@ export default function Table() {
       }
     });
   };
-
   return (
     <div className="rounded  bg-white mx-3 py-5 px-3">
       <DialogMessage
-        size={size}
-        open={open}
-        handleOpen={handleOpen}
-        report={report}
+        dialogProp={{
+          size: size,
+          open: open,
+          handleOpen: handleOpen,
+          report: report,
+        }}
       />
       <h1 className="text-gray-700 text-xl font-bold mb-3 font-serif py-3">
         Reports

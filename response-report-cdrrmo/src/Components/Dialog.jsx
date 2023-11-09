@@ -11,7 +11,9 @@ import { useRef } from "react";
 import logo1 from "../assets/logo1.png";
 import ReactToPrint from "react-to-print";
 
-export default function DialogMessage({ open, size, handleOpen, report }) {
+export default function DialogMessage(props) {
+  const { dialogProp } = props;
+  const { size, open, handleOpen, report } = dialogProp;
   const formatTime = (data) => {
     // Create a new Date object to parse the time string
     const jsDate = new Date(`01/01/2000 ${data}`);

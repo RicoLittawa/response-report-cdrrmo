@@ -7,13 +7,11 @@ import {
   Card,
   Typography,
 } from "@material-tailwind/react";
-import { useEffect, useRef, useState } from "react";
+import { useRef } from "react";
 import logo1 from "../assets/logo1.png";
 import ReactToPrint from "react-to-print";
-import axios from "axios";
 
-export default function DialogMessage({ open, size, handleOpen, id }) {
-  const [report, setReport] = useState({});
+export default function DialogMessage({ open, size, handleOpen, report }) {
   const formatTime = (data) => {
     // Create a new Date object to parse the time string
     const jsDate = new Date(`01/01/2000 ${data}`);
@@ -30,21 +28,8 @@ export default function DialogMessage({ open, size, handleOpen, id }) {
     }
     return `${hours}:${minutes} ${amOrPm}`;
   };
-  const time = formatTime();
+  const time = formatTime(report.time);
   const componentRef = useRef();
-  console.log(id);
-  const getData = () => {
-    axios
-      .get(`http://localhost:3000/update/${id}`)
-      .then((response) => {
-        setReport(response.data);
-        console.log(report);
-      })
-      .catch((error) => {
-        console.error("Error fetching data:", error);
-      });
-  };
-
 
   return (
     <section>
@@ -77,33 +62,34 @@ export default function DialogMessage({ open, size, handleOpen, id }) {
               <div className="flex justify-between pt-3 font-bold text-sm text-black">
                 <p>
                   Type of Emergency:
-                  <span className="font-normal"></span>
+                  <span className="font-normal"> {report.emergencyType}</span>
                 </p>
                 <div>
                   <p>
-                    Date: <span className="font-normal"></span>
+                    Date: <span className="font-normal"> {report.date}</span>
                   </p>
                   <p>
                     Time of Call:
-                    <span className="font-normal"></span>
+                    <span className="font-normal"> {time}</span>
                   </p>
                 </div>
               </div>
               <div className="text-sm text-black font-bold mb-5">
                 <p>
                   Type of Incident:
-                  <span className="font-normal"></span>
+                  <span className="font-normal"> {report.typeOfIncident}</span>
                 </p>
                 <p>
-                  Location: <span className="font-normal"></span>
+                  Location:{" "}
+                  <span className="font-normal"> {report.location}</span>
                 </p>
                 <p>
                   Name of Caller:
-                  <span className="font-normal"></span>
+                  <span className="font-normal"> {report.nameOfCaller}</span>
                 </p>
                 <p>
                   No. of person involved:
-                  <span className="font-normal"></span>
+                  <span className="font-normal"> {report.personInvolved}</span>
                 </p>
               </div>
               <Card>
@@ -121,55 +107,72 @@ export default function DialogMessage({ open, size, handleOpen, id }) {
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <td className="border border-slate-300 px-3">
-                        <span className="font-normal"></span>
-                      </td>
-                      <td className="border border-slate-300 px-3">
-                        <span className="font-normal"></span>
-                      </td>
-                      <td className="border border-slate-300 px-3">
-                        <span className="font-normal"></span>
-                      </td>
-                      <td className="border border-slate-300 px-3">
-                        <span className="font-normal"></span>
-                      </td>
-                      <td className="border border-slate-300 px-3">
-                        <span className="font-normal"></span>
-                      </td>
-                      <td className="border border-slate-300 px-3">
-                        <span className="font-normal"></span>
-                      </td>
-                    </tr>
+                    {Array.isArray(report.patientInformation) &&
+                      report.patientInformation.map((p, index) => (
+                        <tr key={index}>
+                          <td className="border border-slate-300 px-3">
+                            <span className="font-normal">
+                              {p.nameOfPatient}
+                            </span>
+                          </td>
+                          <td className="border border-slate-300 px-3">
+                            <span className="font-normal">{p.age}</span>
+                          </td>
+                          <td className="border border-slate-300 px-3">
+                            <span className="font-normal">{p.gender}</span>
+                          </td>
+                          <td className="border border-slate-300 px-3">
+                            <span className="font-normal">{p.condition}</span>
+                          </td>
+                          <td className="border border-slate-300 px-3">
+                            <span className="font-normal">{p.actionTaken}</span>
+                          </td>
+                          <td className="border border-slate-300 px-3">
+                            <span className="font-normal">{p.responders}</span>
+                          </td>
+                        </tr>
+                      ))}
                   </tbody>
                 </table>
               </Card>
             </section>
             <section className="pt-32 mx-32">
-              <div
-                className=".
-              "
-              >
-                <p>Members Responded:</p>
+              <div>
+                <p className="font-bold text-black">Members Responded:</p>
                 <div className="ml-4">
-                  <p>
+                  <p className="font-bold text-black">
                     Driver:
-                    <span className="font-normal"></span>
+                    <span className="font-normal">
+                      {report?.membersResponded?.driver || null}
+                    </span>
                   </p>
-                  <p>
+                  <div className="font-bold text-black">
                     Member/s:
-                    <span className="font-normal"></span>
-                  </p>
-                  <p>
+                    <br />
+                    {Array.isArray(report?.membersResponded?.members) &&
+                      report.membersResponded.members.map((m, index) => (
+                        <div key={index} className="pl-3">
+                          <span className="font-normal" key={index}>
+                            {m.nameOfMembers}
+                          </span>
+                        </div>
+                      ))}
+                  </div>
+                  <p className="font-bold text-black">
                     Dispatch:
-                    <span className="font-normal"></span>
+                    <span className="font-normal">
+                      {report?.membersResponded?.dispatch || null}
+                    </span>
                   </p>
                 </div>
               </div>
               <div className="ml-12 py-5 text-sm">
                 <p className="text-black py-3 font-bold">Prepared by:</p>
-                <p className="font-bold text-black ">
-                  <span className="font-normal"></span>
+                <p className="font-bold text-black">
+                  <span className="font-normal">
+                    {" "}
+                    {report?.membersResponded?.preparedBy || null}
+                  </span>
                 </p>
               </div>
               <div className="ml-12 text-sm">

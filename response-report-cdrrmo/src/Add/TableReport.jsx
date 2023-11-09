@@ -12,32 +12,34 @@ const ITEMS_PER_PAGE = 5;
 export default function Table() {
   const [data, setData] = useState([]);
   const [size, setSize] = useState(null);
-  // const [id,setId]= useState(null);
-  const [report, setReport] = useState({});
   const [open, setOpen] = useState(false);
-  const [id, setId]= useState()
+  const [report, setReport] = useState([]);
 
   const [currentPage, setCurrentPage] = useState(1);
-
   // Calculate the total number of pages
   const totalPages = Math.ceil(data.length / ITEMS_PER_PAGE);
-
   // Calculate the starting and ending indices for the current page
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
   const endIndex = startIndex + ITEMS_PER_PAGE;
-
   // Slice the data to display only the items for the current page
   const currentPageData = data.slice(startIndex, endIndex);
-
   const handlePageChange = (newPage) => {
     setCurrentPage(newPage);
   };
-
-  const handleOpen = (value,id) => {
+  const handleOpen = async (value, id) => {
     setOpen(!open);
     setSize(value);
-    setId(id)
+    if (id) {
+      try {
+        const response = await axios.get(`http://localhost:3000/update/${id}`);
+        setReport(response.data);
+        console.log(report);
+      } catch (error) {
+        console.log(error.message);
+      }
+    }
   };
+
   const TABLE_HEAD = [
     "Name",
     "Age",
@@ -49,26 +51,18 @@ export default function Table() {
   ];
 
   // Function to fetch data from the server
-  const fetchData = async () => {
-    await axios
-      .get("http://localhost:3000/")
-      .then((response) => {
-        setData(response.data);
-      })
-      .catch((error) => {
-        console.error("Error fetching data:", error);
-      });
-  };
 
   useEffect(() => {
-    fetchData();
-
-    const pollingInterval = setInterval(fetchData, 10000);
-
-    return () => {
-      clearInterval(pollingInterval);
+    const fetchData = async () => {
+      try {
+        const response = await axios.get("http://localhost:3000/");
+        setData(response.data);
+      } catch (error) {
+        console.log(error.message);
+      }
     };
-  }, []);
+    fetchData();
+  }, [data]);
 
   //Delete
   const handleDelete = (id) => {
@@ -113,7 +107,7 @@ export default function Table() {
         size={size}
         open={open}
         handleOpen={handleOpen}
-        id={id}
+        report={report}
       />
       <h1 className="text-gray-700 text-xl font-bold mb-3 font-serif py-3">
         Reports

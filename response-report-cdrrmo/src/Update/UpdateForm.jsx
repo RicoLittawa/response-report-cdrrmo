@@ -1,127 +1,34 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faArrowLeft,
-  faCircleExclamation,
-} from "@fortawesome/free-solid-svg-icons";
-import {
-  Button,
-  Radio,
-  Typography,
-  Input,
-  Select,
-  Option,
-  Textarea,
-} from "@material-tailwind/react";
+import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import { Button, Typography } from "@material-tailwind/react";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { useFormik } from "formik";
+import { Formik, FieldArray, Field, Form } from "formik";
+import {
+  MaterialTailwindInput,
+  MaterialTailwindRadio,
+  MaterialTailwindSelect,
+} from "../Components/MaterialTailwindInput";
 import { validationSchema } from "../Components/constants";
-import LoadingState from "../Components/LoadingState";
-import useLoading from "../Components/scripts/useLoading";
 import Swal from "sweetalert2";
 export default function UpdateForm() {
   const { id } = useParams();
-  const [data, setData] = useState({});
-  const navigate = useNavigate();
-  const { loading, startLoading, stopLoading } = useLoading();
+  const [data, setData] = useState([]);
 
   useEffect(() => {
-    axios
-      .get(`http://localhost:3000/update/${id}`)
-      .then((response) => {
+    const fetchDataUpdate = async () => {
+      try {
+        const response = await axios.get(`http://localhost:3000/update/${id}`);
         setData(response.data);
-      })
-      .catch((error) => {
-        console.error("Error fetching data:", error);
-      });
+      } catch (error) {
+        console.log(error.message);
+      }
+    };
+    fetchDataUpdate();
   }, [id]);
-  const formik = useFormik({
-    enableReinitialize: true,
-    initialValues: {
-      emergencyType: data.emergencyType || "",
-      date: data.date || "",
-      time: data.time || "",
-      typeOfIncident: data.typeOfIncident || "",
-      location: data.location || "",
-      nameOfCaller: data.nameOfCaller || "",
-      personInvolved: data.personInvolved || "",
-      nameOfPatient: "",
-      age: "",
-      gender: "",
-      condition: "",
-      actionTaken: "",
-      responders: "",
-      driver: "",
-      dispatch: "",
-      members: "",
-      preparedBy: "",
-      ...data.patientInformation,
-      ...data.membersResponded,
-    },
-    validationSchema,
-    onSubmit: (values, { resetForm }) => {
-      const updatedData = {
-        emergencyType: values.emergencyType,
-        date: values.date,
-        time: values.time,
-        typeOfIncident: values.typeOfIncident,
-        location: values.location,
-        nameOfCaller: values.nameOfCaller,
-        personInvolved: values.personInvolved,
-        patientInformation: {
-          nameOfPatient: values.nameOfPatient,
-          age: values.age,
-          gender: values.gender,
-          condition: values.condition,
-          actionTaken: values.actionTaken,
-          responders: values.responders,
-        },
-        membersResponded: {
-          driver: values.driver,
-          dispatch: values.dispatch,
-          members: values.members,
-          preparedBy: values.preparedBy,
-        },
-      };
-      startLoading();
-      Swal.fire({
-        title: "Do you want to save the changes?",
-        showDenyButton: true,
-        showCancelButton: true,
-        confirmButtonText: "Save",
-        denyButtonText: `Don't save`,
-      }).then((result) => {
-        if (result.isConfirmed) {
-          axios
-            .put(`http://localhost:3000/update/${id}`, { reports: updatedData })
-            .then((result) => {
-              Swal.fire({
-                icon: "success",
-                title: "Update",
-                text: "Changes has been saved",
-                showConfirmButton: false,
-                timer: 1000,
-              });
-              resetForm();
-            })
-            .catch((err) => {
-              console.log(err);
-            })
-            .finally(() => {
-              stopLoading();
-              setTimeout(() => {
-                navigate("/");
-              }, 1000);
-            });
-        } else if (result.isDenied) {
-          stopLoading();
-          Swal.fire("Changes are not saved", "", "info");
-        }
-      });
-    },
-  });
+  console.log(data);
 
   return (
     <div className="w-full">
@@ -132,363 +39,378 @@ export default function UpdateForm() {
         </Typography>
       </Link>
 
-      <form className="bg-white px-8 mb-4" onSubmit={formik.handleSubmit}>
-        <Typography variant="h4" className="text-gray-700 py-3">
-          Report Information
-        </Typography>
-        <div className="grid grid-cols-2 gap-3">
-          <div id="emergencyType" className="mb-2">
-            <Typography variant="small" className="text-gray-700">
-              Type of Emergency
+      <Formik
+        initialValues={{
+          emergencyType: "",
+          date: "",
+          time: "",
+          typeOfIncident: "",
+          location: "",
+          nameOfCaller: "",
+          personInvolved: "",
+          patientInformation: [
+            {
+              nameOfPatient: "",
+              age: "",
+              gender: "",
+              condition: "",
+              actionTaken: "",
+              responders: "",
+            },
+          ],
+          membersResponded: {
+            driver: "",
+            members: [
+              {
+                nameOfMembers: "",
+              },
+            ],
+            dispatch: "",
+            preparedBy: "",
+          },
+        }}
+        validationSchema={validationSchema}
+        onSubmit={async (values) => {
+          console.log("values", values);
+          try {
+            const response = await axios.post("http://localhost:3000/", {
+              reports: values,
+            });
+            console.log("Request successful:", response.data);
+            window.location.reload();
+          } catch (error) {
+            console.error("Error:", error);
+          }
+        }}
+      >
+        {({ values, errors, touched, isSubmitting }) => (
+          <Form className="px-8 pt-6 pb-8 mb-4">
+            <Typography variant="h4" className="text-gray-700 py-3">
+              Report Information
             </Typography>
-            {formik.touched.emergencyType && formik.errors.emergencyType ? (
-              <Typography variant="small" className="text-red-500">
-                <FontAwesomeIcon className="pr-1" icon={faCircleExclamation} />
-                {formik.errors.emergencyType}
-              </Typography>
-            ) : null}
-            <div>
-              <Radio
-                name="emergencyType"
-                label="Medical"
-                color="green"
-                checked={formik.values.emergencyType === "medical"}
-                onChange={formik.handleChange}
-                value="medical"
-              />
-              <Radio
-                name="emergencyType"
-                label="Trauma"
-                color="green"
-                checked={formik.values.emergencyType === "trauma"}
-                onChange={formik.handleChange}
-                value="trauma"
-              />
-            </div>
-          </div>
-          <div className="place-self-end">
-            <div className="pb-3">
-              {formik.touched.date && formik.errors.date ? (
-                <Typography variant="small" className="text-red-500">
-                  <FontAwesomeIcon
-                    className="pr-1"
-                    icon={faCircleExclamation}
+            <div className="grid grid-cols-2">
+              <div>
+                {errors.emergencyType && touched.emergencyType ? (
+                  <Typography color="red">Please select an option.</Typography>
+                ) : null}
+                <Field
+                  type="radio "
+                  name="emergencyType"
+                  label="Medical"
+                  color="green"
+                  component={MaterialTailwindRadio}
+                  value="medical"
+                />
+                <Field
+                  type="radio"
+                  name="emergencyType"
+                  label="Trauma"
+                  color="green"
+                  component={MaterialTailwindRadio}
+                  value="trauma"
+                />
+              </div>
+              <div className="place-self-end">
+                <div className="py-3">
+                  <Field
+                    type="date"
+                    name="date"
+                    label="Date"
+                    component={MaterialTailwindInput}
+                    error={errors.date && touched.date ? true : false}
                   />
-                  {formik.errors.date}
-                </Typography>
-              ) : null}
-              <Input
-                label="Date"
-                type="date"
-                name="date"
-                value={formik.values.date}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                error={formik.touched.date && formik.errors.date ? true : false}
+                </div>
+                <div className="py-3">
+                  <Field
+                    type="time"
+                    name="time"
+                    label="Time"
+                    component={MaterialTailwindInput}
+                    error={errors.time && touched.time ? true : false}
+                  />
+                </div>
+              </div>
+            </div>
+            <div className="grid grid-cols-1 gap-3">
+              <Field
+                type="text"
+                name="typeOfIncident"
+                label="Type Of Incident"
+                component={MaterialTailwindInput}
+                error={
+                  errors.typeOfIncident && touched.typeOfIncident ? true : false
+                }
+              />
+              <Field
+                type="text"
+                name="location"
+                label="Location"
+                component={MaterialTailwindInput}
+                error={errors.location && touched.location ? true : false}
+              />
+              <Field
+                type="text"
+                name="nameOfCaller"
+                label="Name Of Caller"
+                component={MaterialTailwindInput}
+                error={
+                  errors.nameOfCaller && touched.nameOfCaller ? true : false
+                }
+              />
+              <Field
+                type="number"
+                name="personInvolved"
+                label="No. Person Involved"
+                component={MaterialTailwindInput}
+                error={
+                  errors.personInvolved && touched.personInvolved ? true : false
+                }
               />
             </div>
             <div>
-              {formik.touched.time && formik.errors.time ? (
-                <Typography variant="small" className="text-red-500">
-                  <FontAwesomeIcon
-                    className="pr-1"
-                    icon={faCircleExclamation}
-                  />
-                  {formik.errors.time}
-                </Typography>
-              ) : null}
-              <Input
-                label="time"
-                type="time"
-                name="time"
-                value={formik.values.time}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                error={formik.touched.time && formik.errors.time ? true : false}
+              <FieldArray name="patientInformation">
+                {({ insert, push, remove }) => (
+                  <div>
+                    <div className="flex justify-between py-3">
+                      <Typography variant="h4" className="text-gray-700 py-3">
+                        Patient Information
+                      </Typography>
+                      <Button
+                        type="button"
+                        color="green"
+                        onClick={() =>
+                          push({
+                            nameOfPatient: "",
+                            age: "",
+                            gender: "",
+                            condition: "",
+                            actionTaken: "",
+                            responders: "",
+                          })
+                        }
+                      >
+                        ADD PATIENT
+                      </Button>
+                    </div>
+                    {values.patientInformation.map((patient, index) => (
+                      <div key={index} className="grid grid-cols-1 gap-3 py-3">
+                        <Field
+                          type="text"
+                          name={`patientInformation[${index}].nameOfPatient`}
+                          label="Name Of Patient"
+                          component={MaterialTailwindInput}
+                          error={
+                            errors.patientInformation &&
+                            errors.patientInformation[index] &&
+                            errors.patientInformation[index].nameOfPatient &&
+                            touched.patientInformation &&
+                            touched.patientInformation[index] &&
+                            touched.patientInformation[index].nameOfPatient
+                              ? true
+                              : false
+                          }
+                        />
+                        <Field
+                          type="number"
+                          name={`patientInformation[${index}].age`}
+                          label="Age"
+                          component={MaterialTailwindInput}
+                          error={
+                            errors.patientInformation &&
+                            errors.patientInformation[index] &&
+                            errors.patientInformation[index].age &&
+                            touched.patientInformation &&
+                            touched.patientInformation[index] &&
+                            touched.patientInformation[index].age
+                              ? true
+                              : false
+                          }
+                        />
+                        <Field
+                          name={`patientInformation[${index}].gender`}
+                          label="Gender"
+                          component={MaterialTailwindSelect}
+                          error={
+                            errors.patientInformation &&
+                            errors.patientInformation[index] &&
+                            errors.patientInformation[index].gender &&
+                            touched.patientInformation &&
+                            touched.patientInformation[index] &&
+                            touched.patientInformation[index].gender
+                              ? true
+                              : false
+                          }
+                        />
+                        <Field
+                          type="text"
+                          name={`patientInformation[${index}].condition`}
+                          label="Condition"
+                          component={MaterialTailwindInput}
+                          error={
+                            errors.patientInformation &&
+                            errors.patientInformation[index] &&
+                            errors.patientInformation[index].condition &&
+                            touched.patientInformation &&
+                            touched.patientInformation[index] &&
+                            touched.patientInformation[index].condition
+                              ? true
+                              : false
+                          }
+                        />
+                        <Field
+                          type="text"
+                          name={`patientInformation[${index}].actionTaken`}
+                          label="Action Taken"
+                          component={MaterialTailwindInput}
+                          error={
+                            errors.patientInformation &&
+                            errors.patientInformation[index] &&
+                            errors.patientInformation[index].actionTaken &&
+                            touched.patientInformation &&
+                            touched.patientInformation[index] &&
+                            touched.patientInformation[index].actionTaken
+                              ? true
+                              : false
+                          }
+                        />
+                        <Field
+                          type="number"
+                          name={`patientInformation[${index}].responders`}
+                          label="No. Responders"
+                          component={MaterialTailwindInput}
+                          error={
+                            errors.patientInformation &&
+                            errors.patientInformation[index] &&
+                            errors.patientInformation[index].responders &&
+                            touched.patientInformation &&
+                            touched.patientInformation[index] &&
+                            touched.patientInformation[index].responders
+                              ? true
+                              : false
+                          }
+                        />
+                        <Button
+                          type="button"
+                          color="red"
+                          onClick={() => remove(index)}
+                        >
+                          X
+                        </Button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </FieldArray>
+            </div>
+            <Typography variant="h4" className="text-gray-700 py-3">
+              Responders Information
+            </Typography>
+            <div className="grid grid-cols-1 gap-3">
+              <Field
+                type="text"
+                name={`membersResponded.driver`}
+                label="Driver"
+                component={MaterialTailwindInput}
+                error={
+                  errors.membersResponded &&
+                  errors.membersResponded.driver &&
+                  touched.membersResponded &&
+                  touched.membersResponded.driver
+                    ? true
+                    : false
+                }
+              />
+
+              <FieldArray name="membersResponded.members">
+                {({ remove, push }) => (
+                  <div>
+                    {values.membersResponded.members.map((mem, index) => (
+                      <div key={index} className="py-2 flex">
+                        <Field
+                          type="text"
+                          name={`membersResponded.members[${index}].nameOfMembers`}
+                          label="Add Members"
+                          component={MaterialTailwindInput}
+                          error={
+                            errors.membersResponded &&
+                            errors.membersResponded.members &&
+                            errors.membersResponded.members[index] &&
+                            errors.membersResponded.members[index]
+                              .nameOfMembers &&
+                            touched.membersResponded &&
+                            touched.membersResponded.members &&
+                            touched.membersResponded.members[index] &&
+                            touched.membersResponded.members[index]
+                              .nameOfMembers
+                              ? true
+                              : false
+                          }
+                        />
+                        <Button
+                          type="button"
+                          color="red"
+                          className="ml-2"
+                          onClick={() => remove(index)}
+                        >
+                          X
+                        </Button>
+                      </div>
+                    ))}
+                    <div className="flex justify-end">
+                      <Button
+                        type="button"
+                        color="green"
+                        onClick={() =>
+                          push({
+                            nameOfMembers: "",
+                          })
+                        }
+                      >
+                        ADD MEMBER
+                      </Button>
+                    </div>
+                  </div>
+                )}
+              </FieldArray>
+              <Field
+                type="text"
+                name={`membersResponded.dispatch`}
+                label="Dispatch"
+                component={MaterialTailwindInput}
+                error={
+                  errors.membersResponded &&
+                  errors.membersResponded.dispatch &&
+                  touched.membersResponded &&
+                  touched.membersResponded.dispatch
+                    ? true
+                    : false
+                }
+              />
+              <Field
+                type="text"
+                name={`membersResponded.preparedBy`}
+                label="Prepared By"
+                component={MaterialTailwindInput}
+                error={
+                  errors.membersResponded &&
+                  errors.membersResponded.preparedBy &&
+                  touched.membersResponded &&
+                  touched.membersResponded.preparedBy
+                    ? true
+                    : false
+                }
               />
             </div>
-          </div>
-        </div>
-        <div className="grid grid-cols-1 gap-3 py-3">
-          {formik.touched.typeOfIncident && formik.errors.typeOfIncident ? (
-            <Typography variant="small" className="text-red-500">
-              <FontAwesomeIcon className="pr-1" icon={faCircleExclamation} />
-              {formik.errors.typeOfIncident}
-            </Typography>
-          ) : null}
-          <Input
-            label="Type of Incident"
-            type="text"
-            name="typeOfIncident"
-            value={formik.values.typeOfIncident}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            error={
-              formik.touched.typeOfIncident && formik.errors.typeOfIncident
-                ? true
-                : false
-            }
-          />
-          {formik.touched.location && formik.errors.location ? (
-            <Typography variant="small" className="text-red-500">
-              <FontAwesomeIcon className="pr-1" icon={faCircleExclamation} />
-              {formik.errors.location}
-            </Typography>
-          ) : null}
-          <Input
-            label="Location"
-            type="text"
-            name="location"
-            onChange={formik.handleChange}
-            value={formik.values.location}
-            onBlur={formik.handleBlur}
-            error={
-              formik.touched.location && formik.errors.location ? true : false
-            }
-          />
-          {formik.touched.nameOfCaller && formik.errors.nameOfCaller ? (
-            <Typography variant="small" className="text-red-500">
-              <FontAwesomeIcon className="pr-1" icon={faCircleExclamation} />
-              {formik.errors.nameOfCaller}
-            </Typography>
-          ) : null}
-          <Input
-            label="Name of Caller"
-            type="text"
-            name="nameOfCaller"
-            value={formik.values.nameOfCaller}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            error={
-              formik.touched.nameOfCaller && formik.errors.nameOfCaller
-                ? true
-                : false
-            }
-          />
-          {formik.touched.personInvolved && formik.errors.personInvolved ? (
-            <Typography variant="small" className="text-red-500">
-              <FontAwesomeIcon className="pr-1" icon={faCircleExclamation} />
-              {formik.errors.personInvolved}
-            </Typography>
-          ) : null}
-          <Input
-            label="No. of Person Involved"
-            type="number"
-            name="personInvolved"
-            value={formik.values.personInvolved}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            error={
-              formik.touched.personInvolved && formik.errors.personInvolved
-                ? true
-                : false
-            }
-          />
-        </div>
-        <Typography variant="h4" className="text-gray-700 py-3">
-          Patient Information
-        </Typography>
-        <div className="grid grid-cols-1 gap-3">
-          {formik.touched.nameOfPatient && formik.errors.nameOfPatient ? (
-            <Typography variant="small" className="text-red-500">
-              <FontAwesomeIcon className="pr-1" icon={faCircleExclamation} />
-              {formik.errors.nameOfPatient}
-            </Typography>
-          ) : null}
-          <Input
-            label="Name of Patient"
-            type="text"
-            name="nameOfPatient"
-            value={formik.values.nameOfPatient}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            error={
-              formik.touched.nameOfPatient && formik.errors.nameOfPatient
-                ? true
-                : false
-            }
-          />
-          {formik.touched.age && formik.errors.age ? (
-            <Typography variant="small" className="text-red-500">
-              <FontAwesomeIcon className="pr-1" icon={faCircleExclamation} />
-              {formik.errors.age}
-            </Typography>
-          ) : null}
-          <Input
-            label="Age"
-            type="number"
-            name="age"
-            value={formik.values.age}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            error={formik.touched.age && formik.errors.age ? true : false}
-          />
-          {formik.touched.gender && formik.errors.gender ? (
-            <Typography variant="small" className="text-red-500">
-              <FontAwesomeIcon className="pr-1" icon={faCircleExclamation} />
-              {formik.errors.gender}
-            </Typography>
-          ) : null}
-          <Select
-            label="Select Gender"
-            name="gender"
-            onChange={(e) => {
-              // Manually set the value in Formik's state
-              formik.setFieldValue("gender", e);
-              // Call Formik's onChange to trigger validation
-              formik.handleChange(e);
-            }}
-            onBlur={formik.handleBlur}
-            value={formik.values.gender}
-            error={formik.touched.gender && formik.errors.gender ? true : false}
-          >
-            {genderArray.map((gen) => (
-              <Option key={gen} value={gen}>
-                {gen}
-              </Option>
-            ))}
-          </Select>
-          {formik.touched.condition && formik.errors.condition ? (
-            <Typography variant="small" className="text-red-500">
-              <FontAwesomeIcon className="pr-1" icon={faCircleExclamation} />
-              {formik.errors.condition}
-            </Typography>
-          ) : null}
-          <Input
-            label="Injury/Condition"
-            type="text"
-            name="condition"
-            value={formik.values.condition}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            error={
-              formik.touched.condition && formik.errors.condition ? true : false
-            }
-          />
-          {formik.touched.actionTaken && formik.errors.actionTaken ? (
-            <Typography variant="small" className="text-red-500">
-              <FontAwesomeIcon className="pr-1" icon={faCircleExclamation} />
-              {formik.errors.actionTaken}
-            </Typography>
-          ) : null}
-          <Input
-            label="Action Taken"
-            type="text"
-            name="actionTaken"
-            value={formik.values.actionTaken}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            error={
-              formik.touched.actionTaken && formik.errors.actionTaken
-                ? true
-                : false
-            }
-          />
-          {formik.touched.responders && formik.errors.responders ? (
-            <Typography variant="small" className="text-red-500">
-              <FontAwesomeIcon className="pr-1" icon={faCircleExclamation} />
-              {formik.errors.responders}
-            </Typography>
-          ) : null}
-          <Input
-            label="Responders"
-            type="number"
-            name="responders"
-            value={formik.values.responders}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            error={
-              formik.touched.responders && formik.errors.responders
-                ? true
-                : false
-            }
-          />
-        </div>
-        <Typography variant="h4" className="text-gray-700 py-3">
-          Members Responded
-        </Typography>
-        <div className="grid grid-cols-1 gap-3">
-          {formik.touched.driver && formik.errors.driver ? (
-            <Typography variant="small" className="text-red-500">
-              <FontAwesomeIcon className="pr-1" icon={faCircleExclamation} />
-              {formik.errors.driver}
-            </Typography>
-          ) : null}
-          <Input
-            label="Driver"
-            type="text"
-            name="driver"
-            value={formik.values.driver}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            error={formik.touched.driver && formik.errors.driver ? true : false}
-          />
-          {formik.touched.dispatch && formik.errors.dispatch ? (
-            <Typography variant="small" className="text-red-500">
-              <FontAwesomeIcon className="pr-1" icon={faCircleExclamation} />
-              {formik.errors.dispatch}
-            </Typography>
-          ) : null}
-          <Input
-            label="Dispatch"
-            type="text"
-            name="dispatch"
-            value={formik.values.dispatch}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            error={
-              formik.touched.dispatch && formik.errors.dispatch ? true : false
-            }
-          />
-          {formik.touched.members && formik.errors.members ? (
-            <Typography variant="small" className="text-red-500">
-              <FontAwesomeIcon className="pr-1" icon={faCircleExclamation} />
-              {formik.errors.members}
-            </Typography>
-          ) : null}
-          <Textarea
-            label="Members"
-            type="text"
-            name="members"
-            value={formik.values.members}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            error={
-              formik.touched.members && formik.errors.members ? true : false
-            }
-          ></Textarea>
-          {formik.touched.preparedBy && formik.errors.preparedBy ? (
-            <Typography variant="small" className="text-red-500">
-              <FontAwesomeIcon className="pr-1" icon={faCircleExclamation} />
-              {formik.errors.preparedBy}
-            </Typography>
-          ) : null}
-          <Input
-            label="Prepared by"
-            type="text"
-            name="preparedBy"
-            value={formik.values.preparedBy}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            error={
-              formik.touched.preparedBy && formik.errors.preparedBy
-                ? true
-                : false
-            }
-          />
-        </div>
-        <div className="flex justify-end">
-          <Button
-            type="submit"
-            variant="gradient"
-            size="md"
-            color="green"
-            className="mt-2"
-          >
-            {loading ? <LoadingState /> : "Update"}
-          </Button>
-        </div>
-      </form>
+            <div className="flex justify-end my-3">
+              <Button type="submit" color="green" disabled={isSubmitting}>
+                {isSubmitting ? "Submitting" : "Submit"}
+              </Button>
+            </div>
+
+            <pre>{JSON.stringify({ values, errors }, null, 2)}</pre>
+          </Form>
+        )}
+      </Formik>
     </div>
   );
 }

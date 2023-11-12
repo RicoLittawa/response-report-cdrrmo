@@ -7,7 +7,7 @@ const uri = "mongodb+srv://ricolittawa030620:8LpeM1AS2SyRTYUl@cdrrmo.bfvmf8d.mon
 
 const app = express();
 app.use(cors({
-  origin:["hhttps://response-report-cdrrmo.vercel.app"],
+  origin:["https://frontend-ten-xi-26.vercel.app/"],
   methods:["POST","GET"],
   credentials:true
 }));

@@ -2,22 +2,25 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const Report = require("./Models/Reports.js");
-const uri = "mongodb+srv://ricolittawa030620:8LpeM1AS2SyRTYUl@cdrrmo.bfvmf8d.mongodb.net/reports?retryWrites=true&w=majority";
-
+const uri =
+  "mongodb+srv://ricolittawa030620:8LpeM1AS2SyRTYUl@cdrrmo.bfvmf8d.mongodb.net/reports?retryWrites=true&w=majority";
 
 const app = express();
-app.use(cors({
-  origin:["https://frontend-nu-amber.vercel.app"],
-  methods:["POST","GET"],
-  credentials:true
-}));
+
+const corsOptions = {
+  origin: ["https://frontend-nu-amber.vercel.app"],
+  methods: ["POST", "GET"],
+  credentials: true,
+};
+
+app.use(cors(corsOptions));
 app.use(express.json());
 
 mongoose.connect(uri);
 
-app.get("/",(req,res)=>{
-  res.json("hello")
-})
+app.get("/", (req, res) => {
+  res.json("hello");
+});
 
 //Put Request
 app.post("/", (req, res) => {

@@ -62,7 +62,7 @@ export default function TableContent() {
       }
     };
     fetchData();
-  }, [data]);
+  }, []);
 
   //Delete
   const handleDelete = (id) => {

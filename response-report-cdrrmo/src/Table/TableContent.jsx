@@ -15,7 +15,7 @@ export default function TableContent() {
   const [size, setSize] = useState(null);
   const [open, setOpen] = useState(false);
   const [report, setReport] = useState([]);
-  const { handleNavigate } = useContext(TableContext);
+  const {handleNavigate} = useContext(TableContext)
 
   const [currentPage, setCurrentPage] = useState(1);
   // Calculate the total number of pages
@@ -33,9 +33,7 @@ export default function TableContent() {
     setSize(value);
     if (id) {
       try {
-        const response = await axios.get(
-          `https://response-report-api.vercel.app/${id}`
-        );
+        const response = await axios.get(`https://response-report-api.vercel.app/${id}`);
         setReport(response.data);
       } catch (error) {
         console.log(error.message);
@@ -57,9 +55,7 @@ export default function TableContent() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(
-          "https://response-report-api.vercel.app/"
-        );
+        const response = await axios.get("https://response-report-api.vercel.app/");
         setData(response.data);
       } catch (error) {
         console.log(error.message);
@@ -100,7 +96,7 @@ export default function TableContent() {
   return (
     <div className="rounded mx-3 px-3">
       <div className="flex justify-end m-5">
-        <Button color="green" onClick={() => handleNavigate("form")}>
+        <Button color="green" onClick={()=> handleNavigate("form")}>
           Add Report
         </Button>
       </div>
@@ -115,7 +111,7 @@ export default function TableContent() {
       <h1 className="text-gray-700 text-xl font-bold mb-3 font-serif py-3">
         Reports
       </h1>
-      <Card className="w-full h-full my-5">
+      {/* <Card className="w-full h-full my-5">
         <table className="text-left">
           <thead>
             <tr>
@@ -144,7 +140,7 @@ export default function TableContent() {
                     color="blue-gray"
                     className="font-normal"
                   >
-                    {item.emergencyType || null}
+                    {item.emergencyType}
                   </Typography>
                 </td>
                 <td className="border border-slate-300 p-4">
@@ -153,7 +149,7 @@ export default function TableContent() {
                     color="blue-gray"
                     className="font-normal"
                   >
-                    {item.typeOfIncident || null}
+                    {item.typeOfIncident}
                   </Typography>
                 </td>
                 <td className="border border-slate-300 p-4">
@@ -162,7 +158,7 @@ export default function TableContent() {
                     color="blue-gray"
                     className="font-normal"
                   >
-                    {item.location || null}
+                    {item.location}
                   </Typography>
                 </td>
                 <td className="border border-slate-300 p-4">
@@ -171,7 +167,7 @@ export default function TableContent() {
                     color="blue-gray"
                     className="font-normal"
                   >
-                    {item.nameOfCaller || null}
+                    {item.nameOfCaller}
                   </Typography>
                 </td>
                 <td className="border border-slate-300 p-4">
@@ -180,7 +176,7 @@ export default function TableContent() {
                     color="blue-gray"
                     className="font-normal"
                   >
-                    {item.personInvolved || null}
+                    {item.personInvolved}
                   </Typography>
                 </td>
                 <td className="border border-slate-300 p-4">
@@ -189,7 +185,7 @@ export default function TableContent() {
                     color="blue-gray"
                     className="font-normal"
                   >
-                    {item.date || null}
+                    {item.date}
                   </Typography>
                 </td>
                 <td className="border border-slate-300">
@@ -241,7 +237,7 @@ export default function TableContent() {
             </Button>
           </div>
         </CardFooter>
-      </Card>
+      </Card> */}
     </div>
   );
 }

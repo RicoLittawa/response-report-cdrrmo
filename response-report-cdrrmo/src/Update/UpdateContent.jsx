@@ -1,34 +1,62 @@
+import { Link } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import { Button, Typography } from "@material-tailwind/react";
+import { useParams } from "react-router-dom";
+import { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import { Formik, FieldArray, Field, Form } from "formik";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCircleExclamation } from "@fortawesome/free-solid-svg-icons";
-import { Button, Typography } from "@material-tailwind/react";
-import Swal from "sweetalert2";
-import { useContext, useState } from "react";
 import {
   MaterialTailwindInput,
   MaterialTailwindRadio,
   MaterialTailwindSelect,
 } from "../Components/MaterialTailwindInput";
 import TableContext from "../context/TableContext";
-export default function FormFields() {
-  const {initialVal,validationSchema}=useContext(TableContext)
+
+import Swal from "sweetalert2";
+export default function UpdateContent() {
+  const { id } = useParams();
+  const [data, setData] = useState(null);
+  const { initialVal, validationSchema, handleNavigate } =
+    useContext(TableContext);
+
+  useEffect(() => {
+    const fetchDataUpdate = async () => {
+      try {
+        const response = await axios.get(`http://localhost:3000/update/${id}`);
+        setData(response.data);
+      } catch (error) {
+        console.log(error.message);
+      }
+    };
+    fetchDataUpdate();
+  }, []);
+
   return (
     <div className="w-full">
+      <Link to="/" className="flex  px-8 pb-8 mt-3">
+        <FontAwesomeIcon icon={faArrowLeft} />
+        <Typography className="pl-2" variant="small">
+          Back
+        </Typography>
+      </Link>
+
       <Formik
-        initialValues={initialVal}
+        initialValues={data || initialVal}
         validationSchema={validationSchema}
-        onSubmit={async (values) => {
-          console.log("values", values);
-          try {
-            const response = await axios.post("http://localhost:3000/", {
-              reports: values,
-            });
-            console.log("Request successful:", response.data);
-            // window.location.reload()
-          } catch (error) {
-            console.error("Error:", error);
-          }
+        enableReinitialize={true}
+        onSubmit={(values) => {
+          setTimeout(async () => {
+            try {
+              await axios.put(`http://localhost:3000/update/${id}`, {
+                reports: values,
+              });
+              Swal.fire("Success", "Your report has been updated!", "success");
+              handleNavigate("/");
+            } catch (error) {
+              console.error("Error:", error);
+            }
+          }, 2500);
         }}
       >
         {({ values, errors, touched, isSubmitting }) => (
@@ -42,7 +70,7 @@ export default function FormFields() {
                   <Typography color="red">Please select an option.</Typography>
                 ) : null}
                 <Field
-                  type="radio "
+                  type="radio"
                   name="emergencyType"
                   label="Medical"
                   color="green"
@@ -117,7 +145,7 @@ export default function FormFields() {
             </div>
             <div>
               <FieldArray name="patientInformation">
-                {({ insert, push, remove }) => (
+                {({ push, remove }) => (
                   <div>
                     <div className="flex justify-between py-3">
                       <Typography variant="h4" className="text-gray-700 py-3">
@@ -354,8 +382,6 @@ export default function FormFields() {
                 {isSubmitting ? "Submitting" : "Submit"}
               </Button>
             </div>
-
-            <pre>{JSON.stringify({ values, errors }, null, 2)}</pre>
           </Form>
         )}
       </Formik>

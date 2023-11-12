@@ -94,18 +94,17 @@ export default function DialogMessage(props) {
                   <span className="font-normal"> {report.personInvolved}</span>
                 </p>
               </div>
-              <Card>
-                <table>
+                <table className="text-left table-auto w-full">
                   <thead className="text-sm font-normal text-black">
                     <tr>
-                      <th className="border border-slate-300">NAME</th>
-                      <th className="border border-slate-300">AGE</th>
-                      <th className="border border-slate-300">GENDER</th>
-                      <th className="border border-slate-300">
+                      <th className="border border-slate-300 p-2">NAME</th>
+                      <th className="border border-slate-300 p-2">AGE</th>
+                      <th className="border border-slate-300 p-2">GENDER</th>
+                      <th className="border border-slate-300 p-2">
                         INJURY/CONDITION
                       </th>
-                      <th className="border border-slate-300">ACTION TAKEN</th>
-                      <th className="border border-slate-300">RESPONDERS</th>
+                      <th className="border border-slate-300 p-2">ACTION TAKEN</th>
+                      <th className="border border-slate-300 p-2">RESPONDERS</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -136,9 +135,8 @@ export default function DialogMessage(props) {
                       ))}
                   </tbody>
                 </table>
-              </Card>
             </section>
-            <section className="pt-32 mx-32">
+            <section className="pt-14 mx-32">
               <div>
                 <p className="font-bold text-black">Members Responded:</p>
                 <div className="ml-4">
@@ -172,7 +170,6 @@ export default function DialogMessage(props) {
                 <p className="text-black py-3 font-bold">Prepared by:</p>
                 <p className="font-bold text-black">
                   <span className="font-normal">
-                    {" "}
                     {report?.membersResponded?.preparedBy || null}
                   </span>
                 </p>
@@ -180,14 +177,14 @@ export default function DialogMessage(props) {
               <div className="ml-12 text-sm">
                 <p className="text-black py-3 font-bold">Verified by:</p>
                 <p className="font-bold text-black">JULIUS M. MALANTIC,MDRM</p>
-                <p className="text-gray">Operations and Warning Officer</p>
+                <p className="text-black">Operations and Warning Officer</p>
               </div>
               <div className="ml-12 py-5 text-sm">
                 <p className="text-black py-3 font-bold">Noted by:</p>
                 <p className="font-bold text-black">
                   RODRIGO D. DELA ROCA, RSW, MDRM
                 </p>
-                <p className="text-gray">OIC Department Head - CDRRMO</p>
+                <p className="text-black">OIC Department Head - CDRRMO</p>
               </div>
             </section>
           </div>

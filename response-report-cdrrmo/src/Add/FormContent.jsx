@@ -1,86 +1,40 @@
-import { Link } from "react-router-dom";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
-import { Button, Typography } from "@material-tailwind/react";
-import { useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
 import axios from "axios";
 import { Formik, FieldArray, Field, Form } from "formik";
+import { Button, Typography } from "@material-tailwind/react";
+import Swal from "sweetalert2";
+import { useContext } from "react";
 import {
   MaterialTailwindInput,
   MaterialTailwindRadio,
   MaterialTailwindSelect,
 } from "../Components/MaterialTailwindInput";
-import { validationSchema } from "../Components/constants";
-import Swal from "sweetalert2";
-export default function UpdateForm() {
-  const { id } = useParams();
-  const [data, setData] = useState([]);
-
-  useEffect(() => {
-    const fetchDataUpdate = async () => {
-      try {
-        const response = await axios.get(`http://localhost:3000/update/${id}`);
-        setData(response.data);
-      } catch (error) {
-        console.log(error.message);
-      }
-    };
-    fetchDataUpdate();
-  }, [id]);
-  console.log(data);
-
+import TableContext from "../context/TableContext";
+export default function FormContent() {
+  const { initialVal, validationSchema, handleNavigate } =
+    useContext(TableContext);
   return (
     <div className="w-full">
-      <Link to="/" className="flex  px-8 pb-8 mt-3">
-        <FontAwesomeIcon icon={faArrowLeft} />
-        <Typography className="pl-2" variant="small">
-          Back
-        </Typography>
-      </Link>
-
+      <div className="flex justify-end m-5">
+        <Button color="green" onClick={() => handleNavigate("/")}>
+          View Table
+        </Button>
+      </div>
       <Formik
-        initialValues={{
-          emergencyType: "",
-          date: "",
-          time: "",
-          typeOfIncident: "",
-          location: "",
-          nameOfCaller: "",
-          personInvolved: "",
-          patientInformation: [
-            {
-              nameOfPatient: "",
-              age: "",
-              gender: "",
-              condition: "",
-              actionTaken: "",
-              responders: "",
-            },
-          ],
-          membersResponded: {
-            driver: "",
-            members: [
-              {
-                nameOfMembers: "",
-              },
-            ],
-            dispatch: "",
-            preparedBy: "",
-          },
-        }}
+        initialValues={initialVal}
         validationSchema={validationSchema}
-        onSubmit={async (values) => {
-          console.log("values", values);
-          try {
-            const response = await axios.post("http://localhost:3000/", {
-              reports: values,
-            });
-            console.log("Request successful:", response.data);
-            window.location.reload();
-          } catch (error) {
-            console.error("Error:", error);
-          }
+        onSubmit={(values) => {
+          setTimeout(async () => {
+            try {
+              await axios.post("http://localhost:3000/", {
+                reports: values,
+              });
+              Swal.fire("Success", "A report has been added!", "success");
+              handleNavigate("table");
+              console.log("Request successful");
+            } catch (error) {
+              console.error("Error:", error);
+            }
+          }, 2500);
         }}
       >
         {({ values, errors, touched, isSubmitting }) => (
@@ -406,8 +360,6 @@ export default function UpdateForm() {
                 {isSubmitting ? "Submitting" : "Submit"}
               </Button>
             </div>
-
-            <pre>{JSON.stringify({ values, errors }, null, 2)}</pre>
           </Form>
         )}
       </Formik>

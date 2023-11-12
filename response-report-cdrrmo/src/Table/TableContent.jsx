@@ -10,11 +10,12 @@ import Swal from "sweetalert2";
 import TableContext from "../context/TableContext";
 
 const ITEMS_PER_PAGE = 5;
-export default function Table() {
+export default function TableContent() {
   const [data, setData] = useState([]);
   const [size, setSize] = useState(null);
   const [open, setOpen] = useState(false);
   const [report, setReport] = useState([]);
+  const {handleNavigate} = useContext(TableContext)
 
   const [currentPage, setCurrentPage] = useState(1);
   // Calculate the total number of pages
@@ -34,19 +35,18 @@ export default function Table() {
       try {
         const response = await axios.get(`http://localhost:3000/update/${id}`);
         setReport(response.data);
-        console.log(report);
       } catch (error) {
         console.log(error.message);
       }
     }
   };
   const TABLE_HEAD = [
-    "Name",
-    "Age",
-    "Gender",
-    "Injury/Condition",
-    "Action Taken",
-    "Responders",
+    "Emergency",
+    "Incident",
+    "Location",
+    "Name of Caller",
+    "Person's Involved",
+    "Date",
     "Action",
   ];
 
@@ -76,24 +76,17 @@ export default function Table() {
       confirmButtonText: "Yes, delete it!",
     }).then((result) => {
       if (result.isConfirmed) {
-        // Send a DELETE request to the server
         axios
           .delete(`http://localhost:3000/deleteReports/${id}`)
           .then((response) => {
-            // Check if the server successfully deleted the item
             if (response.status === 200) {
-              // Update the local state to remove the deleted item
               setData((data) => data.filter((u) => u._id !== id));
-
-              // Show a success message
               Swal.fire("Deleted!", "Your file has been deleted.", "success");
             } else {
-              // Handle errors or show an error message
               Swal.fire("Error", "Failed to delete the item.", "error");
             }
           })
           .catch((error) => {
-            // Handle errors or show an error message
             console.error("Error deleting item:", error);
             Swal.fire("Error", "Failed to delete the item.", "error");
           });
@@ -101,7 +94,12 @@ export default function Table() {
     });
   };
   return (
-    <div className="rounded  bg-white mx-3 py-5 px-3">
+    <div className="rounded mx-3 px-3">
+      <div className="flex justify-end m-5">
+        <Button color="green" onClick={()=> handleNavigate("form")}>
+          Add Report
+        </Button>
+      </div>
       <DialogMessage
         dialogProp={{
           size: size,
@@ -113,8 +111,8 @@ export default function Table() {
       <h1 className="text-gray-700 text-xl font-bold mb-3 font-serif py-3">
         Reports
       </h1>
-      <Card className="h-full w-full overflow-scroll">
-        <table className="w-full min-w-max table-auto text-left">
+      <Card className="w-full h-full my-5">
+        <table className="text-left">
           <thead>
             <tr>
               {TABLE_HEAD.map((head) => (

@@ -1,9 +1,13 @@
 import React from "react";
 import TableContext from "../context/TableContext";
 import * as Yup from "yup";
-import { useState } from "react";
-
+import Header from "./Header";
+import { useNavigate } from "react-router-dom";
 const TableProvider = ({ children }) => {
+  const navigate= useNavigate()
+  const handleNavigate= (path)=>{
+    navigate(path)
+  }
   const initialVal = {
     emergencyType: "",
     date: "",
@@ -66,8 +70,13 @@ const TableProvider = ({ children }) => {
     }),
   });
   return (
-    <TableContext.Provider value={{ initialVal, validationSchema }}>
-      {children}
+    <TableContext.Provider value={{ initialVal, validationSchema, handleNavigate }}>
+      <main className="flex justify-center m-auto w-full">
+        <section className="bg-white block shadow-md">
+          <Header />
+          {children}
+        </section>
+      </main>
     </TableContext.Provider>
   );
 };

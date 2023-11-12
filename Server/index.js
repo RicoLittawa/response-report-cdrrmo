@@ -6,11 +6,11 @@ const uri = "mongodb+srv://ricolittawa030620:8LpeM1AS2SyRTYUl@cdrrmo.bfvmf8d.mon
 
 
 const app = express();
-app.use(cors({
-  origin:["https://frontend-nu-amber.vercel.app/"],
-  methods:["POST","GET"],
-  credentials:true
-}));
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', 'https://frontend-nu-amber.vercel.app');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+  next();
+});
 app.use(express.json());
 
 mongoose.connect(uri);

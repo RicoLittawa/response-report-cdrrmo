@@ -2,7 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const Report = require("./Models/Reports.js");
-const uri = "mongodb+srv://ricolittawa030620:<8LpeM1AS2SyRTYUl>@cdrrmo.bfvmf8d.mongodb.net/?retryWrites=true&w=majority";
+const uri = "mongodb+srv://ricolittawa030620:8LpeM1AS2SyRTYUl@cdrrmo.bfvmf8d.mongodb.net/?retryWrites=true&w=majority";
 
 
 const app = express();

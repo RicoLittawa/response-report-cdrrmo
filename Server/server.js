@@ -11,6 +11,10 @@ app.use(express.json());
 
 mongoose.connect(uri);
 
+app.get("/",(req,res)=>{
+  res.json("hello")
+})
+
 //Put Request
 app.post("/", (req, res) => {
   const reportData = req.body.reports;

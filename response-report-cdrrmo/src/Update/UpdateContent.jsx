@@ -23,7 +23,7 @@ export default function UpdateContent() {
   useEffect(() => {
     const fetchDataUpdate = async () => {
       try {
-        const response = await axios.get(`http://localhost:3000/update/${id}`);
+        const response = await axios.get(`response-report-cdrrmo.vercel.app/${id}`);
         setData(response.data);
       } catch (error) {
         console.log(error.message);
@@ -48,7 +48,7 @@ export default function UpdateContent() {
         onSubmit={(values) => {
           setTimeout(async () => {
             try {
-              await axios.put(`http://localhost:3000/update/${id}`, {
+              await axios.put(`response-report-cdrrmo.vercel.app/${id}`, {
                 reports: values,
               });
               Swal.fire("Success", "Your report has been updated!", "success");

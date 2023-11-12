@@ -25,7 +25,7 @@ export default function FormContent() {
         onSubmit={(values) => {
           setTimeout(async () => {
             try {
-              await axios.post("http://localhost:3000/", {
+              await axios.post("response-report-cdrrmo.vercel.app/", {
                 reports: values,
               });
               Swal.fire("Success", "A report has been added!", "success");

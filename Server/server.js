@@ -6,7 +6,11 @@ const uri = "mongodb+srv://ricolittawa030620:8LpeM1AS2SyRTYUl@cdrrmo.bfvmf8d.mon
 
 
 const app = express();
-app.use(cors());
+app.use(cors({
+  origin:["https://response-report-cdrrmo.vercel.app/"],
+  methods:["POST","GET"],
+  credentials:true
+}));
 app.use(express.json());
 
 mongoose.connect(uri);

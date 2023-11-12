@@ -15,7 +15,7 @@ export default function FormContent() {
   return (
     <div className="w-full">
       <div className="flex justify-end m-5">
-        <Button color="green" onClick={() => handleNavigate("/")}>
+        <Button color="green" onClick={() => handleNavigate(-1)}>
           View Table
         </Button>
       </div>

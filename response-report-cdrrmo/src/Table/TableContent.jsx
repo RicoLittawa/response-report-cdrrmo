@@ -132,7 +132,7 @@ export default function TableContent() {
             </tr>
           </thead>
           <tbody>
-            {currentPageData.map((item) => (
+            {data.map((item) => (
               <tr key={item._id}>
                 <td className="border border-slate-300 p-4">
                   <Typography

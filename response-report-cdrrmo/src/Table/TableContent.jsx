@@ -111,7 +111,7 @@ export default function TableContent() {
       <h1 className="text-gray-700 text-xl font-bold mb-3 font-serif py-3">
         Reports
       </h1>
-      <Card className="w-full h-full my-5">
+      {/* <Card className="w-full h-full my-5">
         <table className="text-left">
           <thead>
             <tr>
@@ -237,7 +237,7 @@ export default function TableContent() {
             </Button>
           </div>
         </CardFooter>
-      </Card>
+      </Card> */}
     </div>
   );
 }

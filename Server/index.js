@@ -8,7 +8,7 @@ const uri =
 const app = express();
 
 const corsOptions = {
-  origin: "https://response-report-cdrrmo.vercel.app",
+  origin: "https://response-report.vercel.app",
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   credentials: true,
 };

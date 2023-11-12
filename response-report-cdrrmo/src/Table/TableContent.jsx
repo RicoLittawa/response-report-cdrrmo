@@ -15,7 +15,7 @@ export default function TableContent() {
   const [size, setSize] = useState(null);
   const [open, setOpen] = useState(false);
   const [report, setReport] = useState([]);
-  const {handleNavigate} = useContext(TableContext)
+  const { handleNavigate } = useContext(TableContext);
 
   const [currentPage, setCurrentPage] = useState(1);
   // Calculate the total number of pages
@@ -33,7 +33,9 @@ export default function TableContent() {
     setSize(value);
     if (id) {
       try {
-        const response = await axios.get(`https://response-report-api.vercel.app/${id}`);
+        const response = await axios.get(
+          `https://response-report-api.vercel.app/${id}`
+        );
         setReport(response.data);
       } catch (error) {
         console.log(error.message);
@@ -55,7 +57,9 @@ export default function TableContent() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("https://response-report-api.vercel.app/");
+        const response = await axios.get(
+          "https://response-report-api.vercel.app/"
+        );
         setData(response.data);
       } catch (error) {
         console.log(error.message);
@@ -96,7 +100,7 @@ export default function TableContent() {
   return (
     <div className="rounded mx-3 px-3">
       <div className="flex justify-end m-5">
-        <Button color="green" onClick={()=> handleNavigate("form")}>
+        <Button color="green" onClick={() => handleNavigate("form")}>
           Add Report
         </Button>
       </div>
@@ -132,86 +136,90 @@ export default function TableContent() {
             </tr>
           </thead>
           <tbody>
-            {currentPageData.map((item) => (
-              <tr key={item._id}>
-                <td className="border border-slate-300 p-4">
-                  <Typography
-                    variant="small"
-                    color="blue-gray"
-                    className="font-normal"
-                  >
-                    {item.emergencyType}
-                  </Typography>
-                </td>
-                <td className="border border-slate-300 p-4">
-                  <Typography
-                    variant="small"
-                    color="blue-gray"
-                    className="font-normal"
-                  >
-                    {item.typeOfIncident}
-                  </Typography>
-                </td>
-                <td className="border border-slate-300 p-4">
-                  <Typography
-                    variant="small"
-                    color="blue-gray"
-                    className="font-normal"
-                  >
-                    {item.location}
-                  </Typography>
-                </td>
-                <td className="border border-slate-300 p-4">
-                  <Typography
-                    variant="small"
-                    color="blue-gray"
-                    className="font-normal"
-                  >
-                    {item.nameOfCaller}
-                  </Typography>
-                </td>
-                <td className="border border-slate-300 p-4">
-                  <Typography
-                    variant="small"
-                    color="blue-gray"
-                    className="font-normal"
-                  >
-                    {item.personInvolved}
-                  </Typography>
-                </td>
-                <td className="border border-slate-300 p-4">
-                  <Typography
-                    variant="small"
-                    color="blue-gray"
-                    className="font-normal"
-                  >
-                    {item.date}
-                  </Typography>
-                </td>
-                <td className="border border-slate-300">
-                  <div className="flex justify-center">
-                    <Button
-                      onClick={() => handleOpen("xl", item._id)}
-                      className="bg-green-300 drop-shadow-xl hover:bg-green-500 text-white text-sm font-bold px-3 py-1 rounded my-2 mx-2"
+            {currentPageData.length > 0 ? (
+              currentPageData.map((item) => (
+                <tr key={item._id}>
+                  <td className="border border-slate-300 p-4">
+                    <Typography
+                      variant="small"
+                      color="blue-gray"
+                      className="font-normal"
                     >
-                      <PrintIcon />
-                    </Button>
-                    <Link
-                      to={`/update/${item._id}`}
-                      className="bg-blue-300 drop-shadow-xl hover:bg-blue-500 text-white text-sm font-bold px-3 py-1 rounded my-2 mx-2"
+                      {item.emergencyType}
+                    </Typography>
+                  </td>
+                  <td className="border border-slate-300 p-4">
+                    <Typography
+                      variant="small"
+                      color="blue-gray"
+                      className="font-normal"
                     >
-                      <EditIcon />
-                    </Link>
-                    <Button
-                      onClick={() => handleDelete(item._id)}
-                      className="bg-red-300 drop-shadow-xl hover:bg-red-500 text-white text-sm font-bold px-3 py-1 rounded my-2 mx-2"
+                      {item.typeOfIncident}
+                    </Typography>
+                  </td>
+                  <td className="border border-slate-300 p-4">
+                    <Typography
+                      variant="small"
+                      color="blue-gray"
+                      className="font-normal"
                     >
-                      <DeleteIcon />
-                    </Button>
-                  </div>
-                </td>
-              </tr>
-            ))}
+                      {item.location}
+                    </Typography>
+                  </td>
+                  <td className="border border-slate-300 p-4">
+                    <Typography
+                      variant="small"
+                      color="blue-gray"
+                      className="font-normal"
+                    >
+                      {item.nameOfCaller}
+                    </Typography>
+                  </td>
+                  <td className="border border-slate-300 p-4">
+                    <Typography
+                      variant="small"
+                      color="blue-gray"
+                      className="font-normal"
+                    >
+                      {item.personInvolved}
+                    </Typography>
+                  </td>
+                  <td className="border border-slate-300 p-4">
+                    <Typography
+                      variant="small"
+                      color="blue-gray"
+                      className="font-normal"
+                    >
+                      {item.date}
+                    </Typography>
+                  </td>
+                  <td className="border border-slate-300">
+                    <div className="flex justify-center">
+                      <Button
+                        onClick={() => handleOpen("xl", item._id)}
+                        className="bg-green-300 drop-shadow-xl hover:bg-green-500 text-white text-sm font-bold px-3 py-1 rounded my-2 mx-2"
+                      >
+                        <PrintIcon />
+                      </Button>
+                      <Link
+                        to={`/update/${item._id}`}
+                        className="bg-blue-300 drop-shadow-xl hover:bg-blue-500 text-white text-sm font-bold px-3 py-1 rounded my-2 mx-2"
+                      >
+                        <EditIcon />
+                      </Link>
+                      <Button
+                        onClick={() => handleDelete(item._id)}
+                        className="bg-red-300 drop-shadow-xl hover:bg-red-500 text-white text-sm font-bold px-3 py-1 rounded my-2 mx-2"
+                      >
+                        <DeleteIcon />
+                      </Button>
+                    </div>
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <p>No data available</p>
+            )}
           </tbody>
         </table>
         <CardFooter className="flex items-center justify-between border-t border-blue-gray-50 p-4">

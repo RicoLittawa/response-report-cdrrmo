@@ -15,7 +15,7 @@ export default function TableContent() {
   const [size, setSize] = useState(null);
   const [open, setOpen] = useState(false);
   const [report, setReport] = useState([]);
-  const {handleNavigate} = useContext(TableContext)
+  const { handleNavigate } = useContext(TableContext);
 
   const [currentPage, setCurrentPage] = useState(1);
   // Calculate the total number of pages
@@ -33,7 +33,9 @@ export default function TableContent() {
     setSize(value);
     if (id) {
       try {
-        const response = await axios.get(`https://response-report-api.vercel.app/${id}`);
+        const response = await axios.get(
+          `https://response-report-api.vercel.app/${id}`
+        );
         setReport(response.data);
       } catch (error) {
         console.log(error.message);
@@ -55,7 +57,9 @@ export default function TableContent() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("https://response-report-api.vercel.app/");
+        const response = await axios.get(
+          "https://response-report-api.vercel.app/"
+        );
         setData(response.data);
       } catch (error) {
         console.log(error.message);
@@ -96,7 +100,7 @@ export default function TableContent() {
   return (
     <div className="rounded mx-3 px-3">
       <div className="flex justify-end m-5">
-        <Button color="green" onClick={()=> handleNavigate("form")}>
+        <Button color="green" onClick={() => handleNavigate("form")}>
           Add Report
         </Button>
       </div>
@@ -140,7 +144,7 @@ export default function TableContent() {
                     color="blue-gray"
                     className="font-normal"
                   >
-                    {item.emergencyType}
+                    {item.emergencyType || null}
                   </Typography>
                 </td>
                 <td className="border border-slate-300 p-4">
@@ -149,7 +153,7 @@ export default function TableContent() {
                     color="blue-gray"
                     className="font-normal"
                   >
-                    {item.typeOfIncident}
+                    {item.typeOfIncident || null}
                   </Typography>
                 </td>
                 <td className="border border-slate-300 p-4">
@@ -158,7 +162,7 @@ export default function TableContent() {
                     color="blue-gray"
                     className="font-normal"
                   >
-                    {item.location}
+                    {item.location || null}
                   </Typography>
                 </td>
                 <td className="border border-slate-300 p-4">
@@ -167,7 +171,7 @@ export default function TableContent() {
                     color="blue-gray"
                     className="font-normal"
                   >
-                    {item.nameOfCaller}
+                    {item.nameOfCaller || null}
                   </Typography>
                 </td>
                 <td className="border border-slate-300 p-4">
@@ -176,7 +180,7 @@ export default function TableContent() {
                     color="blue-gray"
                     className="font-normal"
                   >
-                    {item.personInvolved}
+                    {item.personInvolved || null}
                   </Typography>
                 </td>
                 <td className="border border-slate-300 p-4">
@@ -185,7 +189,7 @@ export default function TableContent() {
                     color="blue-gray"
                     className="font-normal"
                   >
-                    {item.date}
+                    {item.date || null}
                   </Typography>
                 </td>
                 <td className="border border-slate-300">

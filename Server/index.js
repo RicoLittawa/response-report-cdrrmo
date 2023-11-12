@@ -9,7 +9,7 @@ const app = express();
 
 const corsOptions = {
   origin: ["https://frontend-nu-amber.vercel.app"],
-  methods: ["POST", "GET"],
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   credentials: true,
 };
 
@@ -98,6 +98,9 @@ app.delete("/deleteReports/:id", (req, res) => {
       res.status(500).json({ message: "Server error" });
     });
 });
+
+app.options('*', cors());
+
 
 app.listen(3000, () => {
   console.log("Server is running");

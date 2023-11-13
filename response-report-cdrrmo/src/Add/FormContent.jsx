@@ -29,7 +29,7 @@ export default function FormContent() {
                 reports: values,
               });
               Swal.fire("Success", "A report has been added!", "success");
-              handleNavigate("table");
+              handleNavigate("/");
               console.log("Request successful");
             } catch (error) {
               console.error("Error:", error);

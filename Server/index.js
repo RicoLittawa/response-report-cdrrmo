@@ -3,44 +3,36 @@ const mongoose = require("mongoose");
 const { MongoClient, ServerApiVersion } = require("mongodb");
 const cors = require("cors");
 const Report = require("./Models/Reports.js");
-const uri =
-  "mongodb+srv://ricolittawa030620:8LpeM1AS2SyRTYUl@cdrrmo.bfvmf8d.mongodb.net/?retryWrites=true&w=majority";
-
+// const uri =
+//   "mongodb+srv://ricolittawa030620:8LpeM1AS2SyRTYUl@cdrrmo.bfvmf8d.mongodb.net/?retryWrites=true&w=majority";
+const uri= "mongodb+srv://ricolittawa030620:8LpeM1AS2SyRTYUl@cdrrmo.bfvmf8d.mongodb.net/reports?retryWrites=true&w=majority"
 const app = express();
 
-const corsOptions = {
-  origin: "http://localhost:5173",
-  methods: "GET,PUT,POST,DELETE",
-  credentials: true,
-};
-
-app.use(cors(corsOptions));
+app.use(cors());  
 app.use(express.json());
+mongoose.connect(uri);
 
-// Create a MongoClient with a MongoClientOptions object to set the Stable API version
-const client = new MongoClient(uri, {
-  serverApi: {
-    version: ServerApiVersion.v1,
-    strict: true,
-    deprecationErrors: true,
-  },
-});
+//  Create a MongoClient with a MongoClientOptions object to set the Stable API version
+//  const client = new MongoClient(uri, {
+//    serverApi: {
+//      version: ServerApiVersion.v1,
+//      strict: true,
+//      deprecationErrors: true,
+//    },
+//  });
 
-async function run() {
-  try {
-    // Connect the client to the server	(optional starting in v4.7)
-    await client.connect();
-    // Send a ping to confirm a successful connection
-    await client.db("reports").command({ ping: 1 });
-    console.log(
-      "Pinged your deployment. You successfully connected to MongoDB!"
-    );
-  } finally {
-    // Ensures that the client will close when you finish/error
-    await client.close();
-  }
-}
-run().catch(console.dir);
+//  async function run() {
+//    try {
+//      await client.connect();
+//      await client.db("reports").command({ ping: 1 });
+//      console.log(
+//        "Pinged your deployment. You successfully connected to MongoDB!"
+//      );
+//    } finally {
+//      await client.close();
+//    }
+//  }
+//  run().catch(console.dir);
 
 //Put Request
 app.post("/", (req, res) => {
@@ -119,7 +111,7 @@ app.delete("/deleteReports/:id", (req, res) => {
     });
 });
 
-app.options("*", cors());
+
 
 app.listen(3000, () => {
   console.log("Server is running");

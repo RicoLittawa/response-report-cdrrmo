@@ -23,7 +23,7 @@ export default function UpdateContent() {
   useEffect(() => {
     const fetchDataUpdate = async () => {
       try {
-        const response = await axios.get(`http://localhost:3000/${id}`);
+        const response = await axios.get(`http://localhost:3000/update/${id}`);
         setData(response.data);
       } catch (error) {
         console.log(error.message);

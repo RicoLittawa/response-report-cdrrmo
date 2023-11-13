@@ -33,7 +33,7 @@ export default function TableContent() {
     setSize(value);
     if (id) {
       try {
-        const response = await axios.get(`http://localhost:3000/${id}`);
+        const response = await axios.get(`http://localhost:3000/update/${id}`);
         setReport(response.data);
       } catch (error) {
         console.log(error.message);
@@ -78,7 +78,7 @@ export default function TableContent() {
     }).then((result) => {
       if (result.isConfirmed) {
         axios
-          .delete(`http://localhost:3000/${id}`)
+          .delete(`http://localhost:3000/deleteReports/${id}`)
           .then((response) => {
             if (response.status === 200) {
               setData((data) => data.filter((u) => u._id !== id));

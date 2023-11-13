@@ -2,10 +2,11 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const Report = require("./Models/Reports.js");
-const uri =
-  "mongodb+srv://ricolittawa030620:8LpeM1AS2SyRTYUl@cdrrmo.bfvmf8d.mongodb.net/reports?retryWrites=true&w=majority";
+// const uri =
+//   "mongodb+srv://ricolittawa030620:8LpeM1AS2SyRTYUl@cdrrmo.bfvmf8d.mongodb.net/reports?retryWrites=true&w=majority";
 const app = express();
 
+const uri_key= process.env.MONGODB_URI
 app.use(
   cors({
     origin: "https://response-report.vercel.app",
@@ -15,7 +16,7 @@ app.use(
 );
 
 app.use(express.json());
-mongoose.connect(uri);
+mongoose.connect(uri_key);
 
 //Fetch data for table
 app.get("/reports", (req, res) => {

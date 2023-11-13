@@ -17,9 +17,9 @@ app.use(
 app.use(express.json());
 mongoose.connect(uri);
 
-// app.get("/", (req, res) => {
-//   res.json("API is working");
-// });
+app.get("/", (req, res) => {
+  res.json("API is working");
+});
 //Put Request
 app.post("/", (req, res) => {
   const reportData = req.body.reports;

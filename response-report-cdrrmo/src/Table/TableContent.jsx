@@ -33,7 +33,7 @@ export default function TableContent() {
     setSize(value);
     if (id) {
       try {
-        const response = await axios.get(`http://localhost:3000/update/${id}`);
+        const response = await axios.get(`https://response-report-api.vercel.app/update/${id}`);
         setReport(response.data);
       } catch (error) {
         console.log(error.message);
@@ -55,7 +55,7 @@ export default function TableContent() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://localhost:3000/");
+        const response = await axios.get("https://response-report-api.vercel.app/");
         setData(response.data);
         console.log(data)
       } catch (error) {
@@ -78,7 +78,7 @@ export default function TableContent() {
     }).then((result) => {
       if (result.isConfirmed) {
         axios
-          .delete(`http://localhost:3000/deleteReports/${id}`)
+          .delete(`https://response-report-api.vercel.app/deleteReports/${id}`)
           .then((response) => {
             if (response.status === 200) {
               setData((data) => data.filter((u) => u._id !== id));

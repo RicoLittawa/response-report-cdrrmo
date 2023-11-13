@@ -19,16 +19,20 @@ mongoose.connect(uri);
 
 //Fetch data for table
 app.get("/", (req, res) => {
+  res.json({ message: "API is working" });
+});
+
+app.get("/reports", (req, res) => {
   Report.find()
     .then((reports) => {
       res.json(reports);
-      res.json("API is working");
     })
     .catch((error) => {
       console.error("Error fetching reports:", error);
       res.status(500).json({ error: "Error fetching reports" });
     });
 });
+
 //Put Request
 app.post("/", (req, res) => {
   const reportData = req.body.reports;
@@ -42,7 +46,6 @@ app.post("/", (req, res) => {
       res.status(500).json({ error: "Error saving data" });
     });
 });
-
 
 //Fetch data for update
 app.get("/update/:id", (req, res) => {

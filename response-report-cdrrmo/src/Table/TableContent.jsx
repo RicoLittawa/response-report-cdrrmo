@@ -55,7 +55,7 @@ export default function TableContent() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("https://response-report-api.vercel.app/");
+        const response = await axios.get("https://response-report-api.vercel.app/reports/");
         setData(response.data);
         console.log(data)
       } catch (error) {

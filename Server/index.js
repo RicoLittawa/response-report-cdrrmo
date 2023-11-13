@@ -8,13 +8,17 @@ const uri= "mongodb+srv://ricolittawa030620:8LpeM1AS2SyRTYUl@cdrrmo.bfvmf8d.mong
 const app = express();
 
 
-app.use(cors({
-  origin: 'https://response-report.vercel.app',
-  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-  credentials: true, // Enable credentials (if needed)
-}));
 
-app.use(cors());  
+const corsOptions = {
+  origin: "https://response-report.vercel.app",
+  methods: 'GET,PUT,POST,DELETE',
+  origin: "http://localhost:5173",
+  methods: "GET,PUT,POST,DELETE",
+  credentials: true,
+};
+
+app.use(cors(corsOptions));
+
 app.use(express.json());
 mongoose.connect(uri);
 

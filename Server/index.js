@@ -1,6 +1,6 @@
 const express = require("express");
 const mongoose = require("mongoose");
-const cors = require("micro-cors")();
+const cors = require("cors");
 const Report = require("./Models/Reports.js");
 // const uri =
 //   "mongodb+srv://ricolittawa030620:8LpeM1AS2SyRTYUl@cdrrmo.bfvmf8d.mongodb.net/?retryWrites=true&w=majority";
@@ -12,8 +12,6 @@ const app = express();
 const corsOptions = {
   origin: "https://response-report.vercel.app",
   methods: 'GET,PUT,POST,DELETE',
-  origin: "http://localhost:5173",
-  methods: "GET,PUT,POST,DELETE",
   credentials: true,
 };
 

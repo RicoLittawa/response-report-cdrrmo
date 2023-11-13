@@ -18,11 +18,10 @@ app.use(express.json());
 mongoose.connect(uri);
 
 //Fetch data for table
-app.get("/", (req, res) => {
+app.get("/reports", (req, res) => {
   Report.find()
     .then((reports) => {
       res.json(reports);
-      res.json("API is working");
     })
     .catch((error) => {
       console.error("Error fetching reports:", error);

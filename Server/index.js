@@ -21,9 +21,7 @@ app.use(express.json());
 mongoose.connect(uri);
 
 app.get('/', (req, res) => {
-  const message = 'API is working!';
-  console.log(message);
-  res.send(message);
+res.json("API is working")
 });
 //Put Request
 app.post("/", (req, res) => {

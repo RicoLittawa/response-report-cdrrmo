@@ -4,24 +4,23 @@ const cors = require("cors");
 const Report = require("./Models/Reports.js");
 // const uri =
 //   "mongodb+srv://ricolittawa030620:8LpeM1AS2SyRTYUl@cdrrmo.bfvmf8d.mongodb.net/?retryWrites=true&w=majority";
-const uri= "mongodb+srv://ricolittawa030620:8LpeM1AS2SyRTYUl@cdrrmo.bfvmf8d.mongodb.net/reports?retryWrites=true&w=majority"
+const uri =
+  "mongodb+srv://ricolittawa030620:8LpeM1AS2SyRTYUl@cdrrmo.bfvmf8d.mongodb.net/reports?retryWrites=true&w=majority";
 const app = express();
 
-
-
-const corsOptions = {
-  origin: "https://response-report.vercel.app",
-  methods: 'GET,PUT,POST,DELETE',
-  credentials: true,
-};
-
-app.use(cors(corsOptions));
+app.use(
+  cors({
+    origin: "https://response-report.vercel.app",
+    methods: "GET,PUT,POST,DELETE",
+    credentials: true,
+  })
+);
 
 app.use(express.json());
 mongoose.connect(uri);
 
-app.get('/', (req, res) => {
-res.json("API is working")
+app.get("/", (req, res) => {
+  res.json("API is working");
 });
 //Put Request
 app.post("/", (req, res) => {
@@ -99,9 +98,6 @@ app.delete("/deleteReports/:id", (req, res) => {
       res.status(500).json({ message: "Server error" });
     });
 });
-
-app.options('*', cors());
-
 
 app.listen(3000, () => {
   console.log("Server is running");

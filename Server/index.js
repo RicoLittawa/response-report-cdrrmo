@@ -1,7 +1,6 @@
 const express = require("express");
 const mongoose = require("mongoose");
-const { MongoClient, ServerApiVersion } = require("mongodb");
-const cors = require("cors");
+const cors = require("micro-cors")();
 const Report = require("./Models/Reports.js");
 // const uri =
 //   "mongodb+srv://ricolittawa030620:8LpeM1AS2SyRTYUl@cdrrmo.bfvmf8d.mongodb.net/?retryWrites=true&w=majority";
@@ -19,6 +18,11 @@ app.use(cors());
 app.use(express.json());
 mongoose.connect(uri);
 
+app.get('/', (req, res) => {
+  const message = 'API is working!';
+  console.log(message);
+  res.send(message);
+});
 //Put Request
 app.post("/", (req, res) => {
   const reportData = req.body.reports;
